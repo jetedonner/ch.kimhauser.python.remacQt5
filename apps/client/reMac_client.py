@@ -82,7 +82,11 @@ class reMac_client():
                         try:
                             message.process_events(mask)
                             if message.response is not None and message.response != "":
-                                prg.emit(message.response['result'])
+                                # prg.emit(message.response['result'])
+                                if reMac_libclient.reMacModules.keys().__contains__(action):
+                                    prg.emit(reMac_libclient.reMacModules[action][0].run_mod(message.response['result']))
+                                else:
+                                    prg.emit(message.response['result'])
                         except Exception:
                             print(
                                 "main: error: exception for",

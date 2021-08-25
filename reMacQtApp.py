@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget
+import sys
+
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtGui, QtCore
 
@@ -15,7 +17,8 @@ txtHost = QLineEdit("192.168.0.49")
 txtPort = QLineEdit("6890")
 
 
-class reMacQtApp:
+# class reMacQtApp():
+class reMacQtApp(QMainWindow):
 
     sentCommands = []
 
@@ -25,10 +28,15 @@ class reMacQtApp:
     cmd_start_server = QPushButton('Start Server')
     cmd_send_command = QPushButton('Send command')
 
+    cmb_modules = QComboBox()
 
     txtCmdToSend = LineEdit()
 
     def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
 
         window = QWidget()
 
@@ -38,7 +46,7 @@ class reMacQtApp:
         layoutClient = QVBoxLayout()
 
         layout = QVBoxLayout()
-        window.setFixedWidth(710)
+        self.setFixedWidth(710)
         layout.addWidget(QLabel('IP address:'))
         layout.addWidget(txtHost)
         layout.addWidget(QLabel('Port:'))
@@ -51,11 +59,14 @@ class reMacQtApp:
         cmd_start_client.clicked.connect(self.runStartClient)
         layoutClient.addWidget(cmd_start_client)
 
-        cmb_modules = QComboBox()
-        cmb_modules.addItems(['Hello World', 'Info', 'Clipboard', 'Chrome history', 'Chrome logins', 'Shell Command',
-                              'Screenshot', 'Webcam', '(Keylogger - NOT WORKING!)', 'Microphone', 'Module help'])
 
-        layoutClient.addWidget(cmb_modules)
+        # cmb_modules.addItems(['Hello World', 'Info', 'Clipboard', 'Chrome history', 'Chrome logins', 'Shell Command',
+        #                       'Screenshot', 'Webcam', '(Keylogger - NOT WORKING!)', 'Microphone', 'Module help'])
+        self.cmb_modules.addItem("Hello World", "hw")
+        self.cmb_modules.addItem("Clipboard", "cb")
+        self.cmb_modules.currentIndexChanged.connect(self.moduleCmbSel)
+
+        layoutClient.addWidget(self.cmb_modules)
         layoutClient.addWidget(QLabel('Command / Parameter:'))
 
 
@@ -72,7 +83,7 @@ class reMacQtApp:
 
         tabWdgt = QTabWidget()
         layoutServerOutputLine = QHBoxLayout()
-        layoutServerOutputLine.addWidget(QLabel('Output:'))
+        layoutServerOutputLine .addWidget(QLabel('Output:'))
         cmd_clear_server_output = QPushButton('')
         cmd_clear_server_output.setIcon(QtGui.QIcon('images/empty-set.png'))
         cmd_clear_server_output.setIconSize(QtCore.QSize(16, 16))
@@ -86,7 +97,7 @@ class reMacQtApp:
 
         layoutServer.addWidget(txtOutputServer)
         wdgtServer.setLayout(layoutServer)
-        tabWdgt.addTab(wdgtServer, "Server")
+        tabWdgt.addTab(wdgtServer, QtGui.QIcon('images/server.png'), "Server")
 
         layoutClientOutputLine = QHBoxLayout()
         layoutClientOutputLine.addWidget(QLabel('Output:'))
@@ -100,19 +111,46 @@ class reMacQtApp:
         wdgtClientOutputLine.setFixedHeight(64)
         wdgtClientOutputLine.setLayout(layoutClientOutputLine)
         layoutClient.addWidget(wdgtClientOutputLine)
+        txtOutputClient.setFixedHeight(300)
         layoutClient.addWidget(txtOutputClient)
 
 
 
         wdgtClient.setLayout(layoutClient)
-        tabWdgt.addTab(wdgtClient, "Client")
+        tabWdgt.addTab(wdgtClient, QtGui.QIcon('images/hosting.png'), "Client")
         layout.addWidget(tabWdgt)
 
         window.setLayout(layout)
-        window.show()
+        exitAct = QAction(QtGui.QIcon('images/open.png'), ' &Help', self)
+        quitAct = QAction(QtGui.QIcon('images/open.png'), ' &Quit reMac', self)
+        # exitAct.
+        menubar = self.menuBar()
+        menubar.setNativeMenuBar(False)
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(quitAct)
+        fileMenu.triggered[QAction].connect(self.exitApp)
+
+        helpMenu = menubar.addMenu('&Help')
+        helpMenu.addAction(exitAct)
+        helpMenu.triggered[QAction].connect(self.showHelp)
+
+        self.setCentralWidget(window)
+        self.statusBar()
+        self.setWindowTitle("reMac v0.0.1 - Qt5-App")
+        self.show()
         app.exec()
 
     sentCmdListCursor = 0
+
+    def moduleCmbSel(self):
+        print(f"Module selected: {self.cmb_modules.currentData()}")
+        self.txtCmdToSend.setText(self.cmb_modules.currentData())
+
+    def exitApp(self):
+        sys.exit(0)
+
+    def showHelp(self):
+        self.log_output_server("HELP STRING")
 
     def keyDownPressed(self):
         if self.sentCmdListCursor < -1:
