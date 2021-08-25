@@ -2,15 +2,19 @@ import socket
 import selectors
 import traceback
 
-from apps.client.libs import reMac_libclient
+from apps.client.libs.reMac_libclient import reMac_libclient
 
-# conHost = "192.168.0.49"
-conHost = "127.0.0.1"
+conHost = "192.168.0.49"
+# conHost = "127.0.0.1"
 conPort = "6890"
 
 sel = selectors.DefaultSelector()
 
+
 class reMac_client():
+
+    my_client_lib = None
+
     prg = None
 
     def __init__(self):
@@ -52,7 +56,9 @@ class reMac_client():
         try:
             sock.connect_ex(addr)
             events = selectors.EVENT_READ | selectors.EVENT_WRITE
-            message = reMac_libclient.reMac_libclient(sel, sock, addr, request)
+             # reMac_libclient(sel, sock, addr, request)
+            message = reMac_libclient(sel, sock, addr, request, self.prg)
+            self.my_client_lib = message
             sel.register(sock, events, data=message)
             return True
         except socket.error as exc:
@@ -68,12 +74,12 @@ class reMac_client():
         try:
             host, port = myHost, int(myPort)
             action, value = msg, valz
-            request = self.create_request(action, value)
+            args = action.split(" ", 1)
+            if len(args) >= 2:
+                value = args[1]
+            request = self.create_request(args[0], value)
             connResult = self.start_connection(host, port, request)
-            # if connResult:
             prg.emit(f"Connection to reMac Server ({conHost}:{conPort}) successfully established!")
-            # print(f"Connection to reMac Server ({conHost}:{conPort}) successfully established!")
-            # return connResult
             try:
                 while True:
                     events = sel.select(timeout=1)
@@ -81,12 +87,6 @@ class reMac_client():
                         message = key.data
                         try:
                             message.process_events(mask)
-                            if message.response is not None and message.response != "":
-                                # prg.emit(message.response['result'])
-                                if reMac_libclient.reMacModules.keys().__contains__(action):
-                                    prg.emit(reMac_libclient.reMacModules[action][0].run_mod(message.response['result']))
-                                else:
-                                    prg.emit(message.response['result'])
                         except Exception:
                             print(
                                 "main: error: exception for",

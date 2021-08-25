@@ -5,5 +5,5 @@ class mod_client_interface:
     def setup_mod(self):
         pass
 
-    def run_mod(self, response = ""):
-        pass
+    def run_mod(self, message):
+        return message["result"]

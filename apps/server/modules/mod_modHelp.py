@@ -17,26 +17,27 @@ class mod_modHelp(mod_interface):
         sRet = f'#========================================================================#\n'
         sRet += f'| {appName} Server - IP: {local_ip}\n'
         sRet += f'| \n'
-        if len(args) == 1:
+        if len(args) == 0:
             sRet += f'| Modules and command help (all active modules):\n'
             for keyTmp in list(reMacModules):
                 altCmd = reMacModules[keyTmp]
                 sRet += f'| -{keyTmp} / {altCmd[1]}:\t\t{altCmd[2]}\n'
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
-        elif len(args) == 2:
-            sRet += f'| Specific command help for module "{args[1]}":\n'
-            # sRet += f'| \n'
+        elif len(args) >= 1:
+            sRet += f'| Specific command help for module "{args[0]}":\n'
+            sRet += f'| \n'
             moduleFound = False
             for keyTmp in list(reMacModules):
-                if keyTmp == args[1]:
+                if keyTmp == args[0]:
                     altCmd = reMacModules[keyTmp]
                     sRet += f'| -{keyTmp} / {altCmd[1]}: {altCmd[2]}\n'
+                    sRet += f'| \n'
                     sRet += f'| Command: {altCmd[3]}\n'
                     moduleFound = True
                     break
             if not moduleFound:
-                sRet += f'| Command / Module "{args[1]}" NOT FOUND!!!\n'
+                sRet += f'| Command / Module "{args[0]}" NOT FOUND!!!\n'
         # else:
         #     sRet += f'| Command / Module {args[1]} NOT FOUND\n'
         sRet += f'| \n'

