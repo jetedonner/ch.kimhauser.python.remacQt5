@@ -79,7 +79,6 @@ class reMac_libserver(reMac_libbase):
             # print_help()
             pass
         elif input == "hw" \
-                or input == "cb" \
                 or input == "ch" \
                 or input == "cl" \
                 or input == "sc" \
@@ -89,7 +88,8 @@ class reMac_libserver(reMac_libbase):
             return reMacModules[input][0].run_mod()
         elif input == "dl" \
                 or input == "ul" \
-                or input == "in":
+                or input == "in" \
+                or input == "cb":
             return reMacModules[input][0].run_mod(input, value)
         elif input == "sh":
             return reMacModules["sh"][0].run_cmd(input, value)

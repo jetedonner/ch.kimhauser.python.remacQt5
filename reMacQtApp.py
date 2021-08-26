@@ -32,6 +32,7 @@ class reMacQtApp(QMainWindow):
 
     cmb_modules = QComboBox()
     txtCmdToSend = LineEdit()
+    stsBar = None
 
     def __init__(self):
         super().__init__()
@@ -83,7 +84,7 @@ class reMacQtApp(QMainWindow):
 
         self.cmb_modules.addItem("Hello World", "hw")
         self.cmb_modules.addItem("Module help", "mh")
-        self.cmb_modules.addItem("Copy clipboard", "cb")
+        self.cmb_modules.addItem("Copy / paste clipboard", "cb")
         self.cmb_modules.addItem("Record microphone", "rm")
         self.cmb_modules.addItem("Screenshot", "sc")
         self.cmb_modules.addItem("Shell command", "sh")
@@ -104,6 +105,7 @@ class reMacQtApp(QMainWindow):
         wdgtSendCmd.setLayout(layoutSendCmd)
 
         layoutSendCmd.addWidget(self.txtCmdToSend)
+        self.txtCmdToSend.setToolTip("You can also drop a file to upload it to the server!")
         self.txtCmdToSend.setFocus()
         self.cmd_send_command.clicked.connect(self.sendCommand)
 
@@ -177,11 +179,14 @@ class reMacQtApp(QMainWindow):
         helpMenu.triggered[QAction].connect(self.showHelp)
 
         self.setCentralWidget(window)
-        self.statusBar()
+        self.stsBar = self.statusBar()
         self.setWindowTitle("reMac v0.0.1 - Qt5-App")
         self.show()
-        app.exec()
+        app.exec_()
+        # self.stsBar.showMessage("reMac v0.0.1 suite started ...", STATUSBAR_MSG_MSECS)
 
+    global STATUSBAR_MSG_MSECS
+    STATUSBAR_MSG_MSECS = 3000
     sentCmdListCursor = -1
     hlpWin = help_dialog()
     prefWin = pref_dialog()
@@ -196,8 +201,8 @@ class reMacQtApp(QMainWindow):
         self.prefWin.showDialog()
 
     def showHelp(self):
-        help_file = open(f'help.html', 'rb')
-        help_txt = help_file.read()
+        # help_file = open(f'help.html', 'rb')
+        # help_txt = help_file.read()
         self.hlpWin.initUI()
 
     def keyDownPressed(self):
@@ -219,7 +224,7 @@ class reMacQtApp(QMainWindow):
         #     self.log_output_server(f"Starting reMacApp Server: {conHost}:{conPort} ...")
         if ok == 2:
             self.cmd_start_server.setText("Stop Server")
-            self.log_output_server(f"reMac Server started successfully - Listening on: {conHost}:{conPort}")
+            self.log_output_server(f"reMac Server started successfully - Listening on: {conHost}:{conPort}", True)
 
     def runStartServer(self):
         # Step 2: Create a QThread object
@@ -278,12 +283,14 @@ class reMacQtApp(QMainWindow):
         shost = txtHost.text()
         sport = txtPort.text()
         prg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
+        # self.stsBar.showMessage(f"Starting reMacApp Client: {shost}:{sport} ...", STATUSBAR_MSG_MSECS)
         self.myreMac_client.start_client(shost, sport, prg)
 
     def sendCommand(self):
         cmd2Send = self.txtCmdToSend.text().strip()
         if cmd2Send == "":
             return
+        self.stsBar.showMessage("Sending command ... ", STATUSBAR_MSG_MSECS)
         self.sentCommands.append(cmd2Send)
         self.txtCmdToSend.setText("")
         self.recalledCommand = -1
@@ -298,13 +305,17 @@ class reMacQtApp(QMainWindow):
     def clear_output_server(self):
         txtOutputServer.setText("")
 
-    def log_output_server(self, msg):
+    def log_output_server(self, msg, set_status_bar=False):
         txtOutputServer.append(msg)
         txtOutputServer.verticalScrollBar().setValue(txtOutputServer.verticalScrollBar().maximum())
+        if set_status_bar:
+            self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
 
     def clear_output_client(self):
         txtOutputClient.setText("")
 
-    def log_output_client(self, msg):
+    def log_output_client(self, msg, set_status_bar=False):
         txtOutputClient.append(msg)
         txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
+        if set_status_bar:
+            self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)

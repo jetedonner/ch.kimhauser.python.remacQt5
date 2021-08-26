@@ -10,6 +10,21 @@ class mod_modHelp(mod_interface):
         print(f'Module Help')
         return f'mod_modHelp module called!'
 
+    def mod_helptxt(self):
+        help_txt = {
+            'desc': self.pritify4log("The 'Module Help' module returns a list of al available\n"
+                                     "modules (if you don't specify a <module_name>) or a\n"
+                                     "detailed the help text for the specified <module_name>.\n"
+                                     "This is a description, the calling convention as well as\n"
+                                     "extra information if there is any. You can also only show\n"
+                                     "the calling information with the '-c' argument"),
+            'cmd': 'mh [<module_name> [-c]]',
+            'ext': self.pritify4log(
+                '-c\tOnly the calling information for <module_name>'
+            )
+        }
+        return help_txt
+
     def print_client_help(self, appName, reMacModules, module = None):
         args = module.split()
         hostname = socket.gethostname()

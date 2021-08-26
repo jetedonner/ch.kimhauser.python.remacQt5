@@ -6,4 +6,4 @@ class mod_client_clipboard(mod_client_interface):
         print(f'Module Setup (mod_client_clipboard) called successfully!')
 
     def run_mod(self, message):
-        return f"Server clipboard content: {super(mod_client_clipboard, self).run_mod(message)}"
+        return f"{super(mod_client_clipboard, self).run_mod(message)}"
