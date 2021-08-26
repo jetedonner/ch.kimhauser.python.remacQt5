@@ -17,10 +17,13 @@ class mod_info(mod_interfaceRunCmd):
             sRet += f"| System: " + self.get_model()
         if param == "" or param == "-v" or param == "-a":
             sRet += f"| macOS version: " + self.get_macVer() + "\n"
-        if param == "" or param == "-w" or param == "-a":
-            sRet += f"| WiFi: \n" + self.get_wifi()
+        if param == "" or param == "-w" or param == "-wl" or param == "-a":
+            sRet += f"| WiFi: \n" + self.get_wifi(True)
+        if param == "-ws":
+            sRet += f"| WiFi: \n" + self.get_wifi(False)
         if param == "" or param == "-b" or param == "-a":
-            sRet += f" Battery: " + self.get_battery()
+            sRet += ("|" if param == "-b" else  "") + f" Battery: " + self.get_battery()
+        sRet = sRet[:-1]
         sRet += f'#========================================================================#\n'
         return sRet
 
@@ -29,12 +32,13 @@ class mod_info(mod_interfaceRunCmd):
             'desc': self.pritify4log("The 'Info' module returns informations about\n"
                                      "the server system like macOS version, pc model,\n"
                                      "wifi info or the battery condition."),
-            'cmd': 'in [-a | -v | -m | -w | -b]',
+            'cmd': 'in [-a | -v | -m | -w | -wl | -ws | -b]',
             'ext': self.pritify4log(
                    '-a\tAll available information - the default (like no param)\n'
                    '-v\tOnly macOS version\n'
                    '-m\tSystem model <sysctl -n hw.model>\n'
-                   '-w\tAll Wifi-Infos\n'
+                   '-w|-wl\tAll Wifi-Infos\n'
+                   '-ws\tBasic Wifi-Infos\n'
                    '-b\tInformation about the battery')
         }
         return help_txt
@@ -45,11 +49,14 @@ class mod_info(mod_interfaceRunCmd):
     def get_model(self):
         return self.run_command("sysctl -n hw.model")#.decode('utf-8')
 
-    def get_wifi(self):
-        command = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I" # | grep -w SSID"
+    def get_wifi(self, allinfo = True):
+        if allinfo:
+            command = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I" # | grep -w SSID"
+        else:
+            command = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | grep -w SSID"
         sRet = self.run_command(command).replace("\n", "\n|")
-        return "|" + sRet #self.run_command(command)#.decode('utf-8')#.replace("SSID: ", "").strip()
+        return "| " + sRet.strip() #self.run_command(command)#.decode('utf-8')#.replace("SSID: ", "").strip()
 
     def get_battery(self):
-        sRet = self.run_command("pmset -g batt").replace("\n", "\n|")
-        return sRet #.decode("utf-8")# | egrep \"([0-9]+\\%).*\" -o | cut -f1 -d\';\'")
+        sRet = self.run_command("pmset -g batt").replace("\n", "\n| ").replace("\t", "\n| ")
+        return sRet[:-1] #.decode("utf-8")# | egrep \"([0-9]+\\%).*\" -o | cut -f1 -d\';\'")

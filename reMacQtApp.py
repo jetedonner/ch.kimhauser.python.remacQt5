@@ -300,9 +300,11 @@ class reMacQtApp(QMainWindow):
 
     def log_output_server(self, msg):
         txtOutputServer.append(msg)
+        txtOutputServer.verticalScrollBar().setValue(txtOutputServer.verticalScrollBar().maximum())
 
     def clear_output_client(self):
         txtOutputClient.setText("")
 
     def log_output_client(self, msg):
         txtOutputClient.append(msg)
+        txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
