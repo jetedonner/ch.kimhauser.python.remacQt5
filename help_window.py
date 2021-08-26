@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QTextEdit, QPushButton
+from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QTextBrowser, QPushButton
 
 class help_window(QDialog):
 
@@ -9,18 +9,19 @@ class help_window(QDialog):
         # lblHelpTitle = QLabel("Help")
         layoutMain = QVBoxLayout()
         # layoutMain.addWidget(lblHelpTitle)
-        txtHelpContent = QTextEdit()
+        txtHelpContent = QTextBrowser()
+        txtHelpContent.setOpenExternalLinks(True)
         txtHelpContent.setFixedHeight(500)
         txtHelpContent.setFixedWidth(600)
-        txtHelpContent.setFontFamily("Courier")
-        txtHelpContent.setFontPointSize(14)
-        txtHelpContent.setFontWeight(25)  # QtGui.QFont.Normal)
+        # txtHelpContent.setFontFamily("Courier")
+        # txtHelpContent.setFontPointSize(14)
+        # txtHelpContent.setFontWeight(25)  # QtGui.QFont.Normal)
         txtHelpContent.setReadOnly(True)
 
-        help_file = open(f'help.txt', 'rb')
+        help_file = open(f'help.html', 'rb')
         help_txt = help_file.read()
 
-        txtHelpContent.setText(help_txt.decode("utf-8"))
+        txtHelpContent.setHtml(help_txt.decode("utf-8"))
         layoutMain.addWidget(txtHelpContent)
         cmdClose = QPushButton("Close")
         cmdClose.clicked.connect(self.closeDialog)

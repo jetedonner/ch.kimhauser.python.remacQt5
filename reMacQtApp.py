@@ -45,6 +45,7 @@ class reMacQtApp(QMainWindow):
         layoutServer = QVBoxLayout()
         wdgtClient = QWidget()
         layoutClient = QVBoxLayout()
+        layoutModuleCommand = QVBoxLayout()
 
         layout = QVBoxLayout()
         self.setFixedWidth(710)
@@ -56,6 +57,7 @@ class reMacQtApp(QMainWindow):
 
         layIP = QVBoxLayout()
         wdgtIP = QWidget()
+        wdgtIP.setFixedWidth(500)
         wdgtIP.setLayout(layIP)
         layIP.addWidget(QLabel('IP address:'))
         layIP.addWidget(txtHost)
@@ -65,6 +67,7 @@ class reMacQtApp(QMainWindow):
         wdgtPort.setLayout(layPort)
         layPort.addWidget(QLabel('Port:'))
         layPort.addWidget(txtPort)
+        # layConn.addSpacing(200)
         layConn.addWidget(wdgtPort)
 
 
@@ -77,10 +80,10 @@ class reMacQtApp(QMainWindow):
         cmd_start_client = QPushButton('Start Client')
         cmd_start_client.clicked.connect(self.runStartClient)
         layoutClient.addWidget(cmd_start_client)
+        layoutClient.addSpacing(20)
+        wdgtModuleSendCmd = QGroupBox("Send command to server:")
+        wdgtModuleSendCmd.setLayout(layoutModuleCommand)
 
-
-        # cmb_modules.addItems(['Hello World', 'Info', 'Clipboard', 'Chrome history', 'Chrome logins', 'Shell Command',
-        #                       'Screenshot', 'Webcam', '(Keylogger - NOT WORKING!)', 'Microphone', 'Module help'])
         self.cmb_modules.addItem("Hello World", "hw")
         self.cmb_modules.addItem("Module help", "mh")
         self.cmb_modules.addItem("Copy clipboard", "cb")
@@ -96,20 +99,28 @@ class reMacQtApp(QMainWindow):
 
         self.cmb_modules.currentIndexChanged.connect(self.moduleCmbSel)
 
-        layoutClient.addWidget(self.cmb_modules)
-        layoutClient.addWidget(QLabel('Command / Parameter:'))
+        layoutModuleCommand.addWidget(QLabel('Module:'))
+        layoutModuleCommand.addWidget(self.cmb_modules)
+        # lblDesc = QLabel('<Module description>')
+        # lblDesc.setStyleSheet("QLabel { color : grey; }")
+        # layoutModuleCommand.addWidget(lblDesc)
+        # layoutModuleCommand.addSpacing(20)
+        layoutModuleCommand.addWidget(QLabel('Command / Parameter:'))
+        layoutSendCmd = QHBoxLayout()
+        wdgtSendCmd = QWidget()
+        wdgtSendCmd.setLayout(layoutSendCmd)
 
-
-        layoutClient.addWidget(self.txtCmdToSend)
-
-
+        layoutSendCmd.addWidget(self.txtCmdToSend)
         self.cmd_send_command.clicked.connect(self.sendCommand)
 
         self.txtCmdToSend.returnPressed.connect(self.cmd_send_command.click)
         self.txtCmdToSend.upPressed.connect(self.keyUpPressed)
         self.txtCmdToSend.downPressed.connect(self.keyDownPressed)
 
-        layoutClient.addWidget(self.cmd_send_command)
+        layoutSendCmd.addWidget(self.cmd_send_command)
+        layoutModuleCommand.addWidget(wdgtSendCmd)
+
+        layoutClient.addWidget(wdgtModuleSendCmd)
 
         tabWdgt = QTabWidget()
         tabWdgt.setFont(QtGui.QFont("Arial", 13))
@@ -149,11 +160,8 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.setFontFamily("Courier")
         txtOutputClient.setFontPointSize(14)
         txtOutputClient.setReadOnly(True)
-        txtOutputClient.setFixedHeight(300)
+        txtOutputClient.setFixedHeight(250)
         layoutClient.addWidget(txtOutputClient)
-
-
-
         wdgtClient.setLayout(layoutClient)
         tabWdgt.addTab(wdgtClient, QtGui.QIcon('images/hosting.png'), "Client")
         layout.addWidget(tabWdgt)
@@ -192,7 +200,7 @@ class reMacQtApp(QMainWindow):
         sys.exit(0)
 
     def showHelp(self):
-        help_file = open(f'help.txt', 'rb')
+        help_file = open(f'help.html', 'rb')
         help_txt = help_file.read()
         self.log_output_server(help_txt.decode("utf-8"))
         self.hlpWin.initUI()
