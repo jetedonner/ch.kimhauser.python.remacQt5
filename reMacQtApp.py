@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QMenu
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtGui, QtCore
 
@@ -9,6 +9,7 @@ from apps.client.reMac_client import reMac_client
 from libs.LineEdit import LineEdit
 from libs.StartServerWorker import StartServerWorker
 from libs.StartClientWorker import StartClientWorker
+from help_window import help_window
 
 app = QApplication([])
 txtOutputServer = QTextEdit()
@@ -105,6 +106,10 @@ class reMacQtApp(QMainWindow):
         wdgtServerOutputLine.setLayout(layoutServerOutputLine)
         layoutServer.addWidget(wdgtServerOutputLine)
 
+        txtOutputServer.setFontFamily("Courier")
+        txtOutputServer.setFontPointSize(14)
+        txtOutputServer.setFontWeight(25)#QtGui.QFont.Normal)
+        txtOutputServer.setReadOnly(True)
         layoutServer.addWidget(txtOutputServer)
         wdgtServer.setLayout(layoutServer)
         tabWdgt.addTab(wdgtServer, QtGui.QIcon('images/server.png'), "Server")
@@ -121,6 +126,9 @@ class reMacQtApp(QMainWindow):
         wdgtClientOutputLine.setFixedHeight(64)
         wdgtClientOutputLine.setLayout(layoutClientOutputLine)
         layoutClient.addWidget(wdgtClientOutputLine)
+        txtOutputClient.setFontFamily("Courier")
+        txtOutputClient.setFontPointSize(14)
+        txtOutputClient.setReadOnly(True)
         txtOutputClient.setFixedHeight(300)
         layoutClient.addWidget(txtOutputClient)
 
@@ -132,11 +140,14 @@ class reMacQtApp(QMainWindow):
 
         window.setLayout(layout)
         exitAct = QAction(QtGui.QIcon('images/open.png'), ' &Help', self)
+        prefAct = QAction(QtGui.QIcon('images/open.png'), ' &Preferences', self)
         quitAct = QAction(QtGui.QIcon('images/open.png'), ' &Quit reMac', self)
         # exitAct.
         menubar = self.menuBar()
         menubar.setNativeMenuBar(False)
         fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(prefAct)
+        fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
         fileMenu.triggered[QAction].connect(self.exitApp)
 
@@ -151,6 +162,7 @@ class reMacQtApp(QMainWindow):
         app.exec()
 
     sentCmdListCursor = -1
+    hlpWin = help_window()
 
     def moduleCmbSel(self):
         print(f"Module selected: {self.cmb_modules.currentData()}")
@@ -160,7 +172,10 @@ class reMacQtApp(QMainWindow):
         sys.exit(0)
 
     def showHelp(self):
-        self.log_output_server("HELP STRING")
+        help_file = open(f'help.txt', 'rb')
+        help_txt = help_file.read()
+        self.log_output_server(help_txt.decode("utf-8"))
+        self.hlpWin.initUI()
 
     def keyDownPressed(self):
         if self.sentCmdListCursor < -1:

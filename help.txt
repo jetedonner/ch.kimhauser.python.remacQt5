@@ -1,0 +1,25 @@
+#===============================================================
+| reMac v.0.0.1 - 2021-08-26 (c) by Kim-David Hauser
+|
+| Remote access and administration for macOS
+| 
+| - http://kimhauser.ch/projects/reMacQt
+| - https://github.com/jetedonner/ch.kimhauser.python.remacQt5
+|
+#===============================================================
+
+DESCRIPTION:
+This remote access and administration suite is written
+with Python and features a modular structure. Using a
+modular setup makes it easy to seperate the functions 
+and keep the overview. It also helps you to easily build
+new functionalities.
+
+
+LICENSE:
+- MIT License (please see the LICENSE file in the project root folder)
+
+
+CREDITS:
+- Flaticon.com (artwork)
+- 
