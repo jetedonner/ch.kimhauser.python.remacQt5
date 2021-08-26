@@ -12,6 +12,23 @@ class mod_shellcmd(mod_interface):
         print(f'Module Setup (mod_shellcmd) called successfully!')
         pass
 
+    def run_cmd(self, cmd = "", param = ""):
+        answer = ""
+        # while True:
+        # cntrl-c to quit
+        # cmd2send = input('$: ')
+        try:
+            # args = cmd2send.split(' ')
+            # if cmd == 'exit':
+            #     break
+            process = subprocess.Popen(param, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = process.communicate()
+            answer = out.decode('utf-8')
+            print(answer)
+        except subprocess.CalledProcessError:
+            answer = f'Error sending command "{cmd} {param}" to shell!'
+        return answer
+
     def run_mod(self, cmd = ""):
         answer = ""
         while True:

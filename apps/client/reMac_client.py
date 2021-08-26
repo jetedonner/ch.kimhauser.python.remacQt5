@@ -29,17 +29,19 @@ class reMac_client():
                 or action == "cb" \
                 or action == "ch" \
                 or action == "cl" \
-                or action == "sh" \
                 or action == "sc" \
                 or action == "wc" \
                 or action == "rm" \
                 or action == "in" \
+                or action == "sh" \
                 or action.startswith("mh"):
             return dict(
                 type="text/json",
                 encoding="utf-8",
                 content=dict(action=action, value=value),
             )
+        elif action == "sh":
+            self.prg.emit("$: ")
         else:
             return dict(
                 type="binary/custom-client-binary-type",

