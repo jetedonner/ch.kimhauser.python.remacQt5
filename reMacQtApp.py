@@ -91,7 +91,8 @@ class reMacQtApp(QMainWindow):
         self.cmb_modules.addItem("Chrome history", "ch")
         self.cmb_modules.addItem("Chrome logins", "cl")
         self.cmb_modules.addItem("System information", "in")
-
+        self.cmb_modules.addItem("Download file", "dl")
+        self.cmb_modules.addItem("Upload file", "ul")
 
         self.cmb_modules.currentIndexChanged.connect(self.moduleCmbSel)
 

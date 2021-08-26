@@ -21,7 +21,7 @@ class mod_modHelp(mod_interface):
             sRet += f'| Modules and command help (all active modules):\n'
             for keyTmp in list(reMacModules):
                 altCmd = reMacModules[keyTmp]
-                sRet += f'| -{keyTmp} / {altCmd[1]}:\t\t{altCmd[2]}\n'
+                sRet += f'| {keyTmp} / {altCmd[1]}:\t\t{altCmd[2]}\n'
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
         elif len(args) >= 1:
