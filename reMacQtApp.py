@@ -1,12 +1,13 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
-from PyQt5.QtCore import QObject, QThread, pyqtSignal, QSettings
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
+    QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
+from PyQt5.QtCore import QThread, QSettings
 from PyQt5 import QtGui, QtCore
 
+from libs.LineEdit import LineEdit
 from apps.server.reMac_server import reMac_server
 from apps.client.reMac_client import reMac_client
-from libs.LineEdit import LineEdit
 from libs.StartServerWorker import StartServerWorker
 from libs.StartClientWorker import StartClientWorker
 from help_dialog import help_dialog
@@ -19,10 +20,10 @@ txtHost = QLineEdit("192.168.0.49")
 txtPort = QLineEdit("6890")
 settings = QSettings("kimhauser.ch", "reMacQt5");
 
+
 class reMacQtApp(QMainWindow):
 
     sentCommands = []
-
     myreMac_server = reMac_server()
     myreMac_client = reMac_client()
 
@@ -30,7 +31,6 @@ class reMacQtApp(QMainWindow):
     cmd_send_command = QPushButton('Send command')
 
     cmb_modules = QComboBox()
-
     txtCmdToSend = LineEdit()
 
     def __init__(self):
@@ -42,7 +42,6 @@ class reMacQtApp(QMainWindow):
         self.prefWin.initUI(settings)
 
         window = QWidget()
-
         wdgtServer = QWidget()
         layoutServer = QVBoxLayout()
         wdgtClient = QWidget()
@@ -69,11 +68,7 @@ class reMacQtApp(QMainWindow):
         wdgtPort.setLayout(layPort)
         layPort.addWidget(QLabel('Port:'))
         layPort.addWidget(txtPort)
-        # layConn.addSpacing(200)
         layConn.addWidget(wdgtPort)
-
-
-
         layout.addWidget(wdgtConn)
 
         self.cmd_start_server.clicked.connect(self.runStartServer)
@@ -103,10 +98,6 @@ class reMacQtApp(QMainWindow):
 
         layoutModuleCommand.addWidget(QLabel('Module:'))
         layoutModuleCommand.addWidget(self.cmb_modules)
-        # lblDesc = QLabel('<Module description>')
-        # lblDesc.setStyleSheet("QLabel { color : grey; }")
-        # layoutModuleCommand.addWidget(lblDesc)
-        # layoutModuleCommand.addSpacing(20)
         layoutModuleCommand.addWidget(QLabel('Command / Parameter:'))
         layoutSendCmd = QHBoxLayout()
         wdgtSendCmd = QWidget()
@@ -142,7 +133,7 @@ class reMacQtApp(QMainWindow):
 
         txtOutputServer.setFontFamily("Courier")
         txtOutputServer.setFontPointSize(14)
-        txtOutputServer.setFontWeight(25)#QtGui.QFont.Normal)
+        txtOutputServer.setFontWeight(25)
         txtOutputServer.setReadOnly(True)
         layoutServer.addWidget(txtOutputServer)
         wdgtServer.setLayout(layoutServer)
@@ -173,15 +164,13 @@ class reMacQtApp(QMainWindow):
         exitAct = QAction(QtGui.QIcon('images/open.png'), ' &Help', self)
         prefAct = QAction('&Preferences', self, triggered=self.showPref)
         quitAct = QAction('&Quit reMac', self,  triggered=self.exitApp)
-        # exitAct.
+
         menubar = self.menuBar()
         menubar.setNativeMenuBar(False)
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(prefAct)
-        # fileMenu.triggered[QAction].connect(self.showPref)
         fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
-        # fileMenu.triggered[QAction].connect(self.exitApp)
 
         helpMenu = menubar.addMenu('&Help')
         helpMenu.addAction(exitAct)
@@ -204,15 +193,11 @@ class reMacQtApp(QMainWindow):
         sys.exit(0)
 
     def showPref(self):
-        # help_file = open(f'help.html', 'rb')
-        # help_txt = help_file.read()
-        # self.log_output_server(help_txt.decode("utf-8"))
         self.prefWin.showDialog()
 
     def showHelp(self):
         help_file = open(f'help.html', 'rb')
         help_txt = help_file.read()
-        # self.log_output_server(help_txt.decode("utf-8"))
         self.hlpWin.initUI()
 
     def keyDownPressed(self):

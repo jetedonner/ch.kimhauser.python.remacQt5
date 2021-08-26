@@ -6,16 +6,11 @@ class help_dialog(QDialog):
         super().__init__()
 
     def initUI(self):
-        # lblHelpTitle = QLabel("Help")
         layoutMain = QVBoxLayout()
-        # layoutMain.addWidget(lblHelpTitle)
         txtHelpContent = QTextBrowser()
         txtHelpContent.setOpenExternalLinks(True)
         txtHelpContent.setFixedHeight(500)
         txtHelpContent.setFixedWidth(600)
-        # txtHelpContent.setFontFamily("Courier")
-        # txtHelpContent.setFontPointSize(14)
-        # txtHelpContent.setFontWeight(25)  # QtGui.QFont.Normal)
         txtHelpContent.setReadOnly(True)
 
         help_file = open(f'help.html', 'rb')
@@ -26,6 +21,7 @@ class help_dialog(QDialog):
         cmdClose = QPushButton("Close")
         cmdClose.clicked.connect(self.closeDialog)
         layoutMain.addWidget(cmdClose)
+
         self.setWindowTitle("reMac v0.0.1 - Help")
         self.setLayout(layoutMain)
         self.setModal(True)
