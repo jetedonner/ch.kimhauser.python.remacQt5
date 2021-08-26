@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QMenu
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtGui, QtCore
 
@@ -48,10 +48,28 @@ class reMacQtApp(QMainWindow):
 
         layout = QVBoxLayout()
         self.setFixedWidth(710)
-        layout.addWidget(QLabel('IP address:'))
-        layout.addWidget(txtHost)
-        layout.addWidget(QLabel('Port:'))
-        layout.addWidget(txtPort)
+
+        layConn = QHBoxLayout()
+        wdgtConn = QGroupBox("Connection:")
+        wdgtConn.setFont(QtGui.QFont("Arial", 13))
+        wdgtConn.setLayout(layConn)
+
+        layIP = QVBoxLayout()
+        wdgtIP = QWidget()
+        wdgtIP.setLayout(layIP)
+        layIP.addWidget(QLabel('IP address:'))
+        layIP.addWidget(txtHost)
+        layConn.addWidget(wdgtIP)
+        layPort = QVBoxLayout()
+        wdgtPort = QWidget()
+        wdgtPort.setLayout(layPort)
+        layPort.addWidget(QLabel('Port:'))
+        layPort.addWidget(txtPort)
+        layConn.addWidget(wdgtPort)
+
+
+
+        layout.addWidget(wdgtConn)
 
         self.cmd_start_server.clicked.connect(self.runStartServer)
         layoutServer.addWidget(self.cmd_start_server)
@@ -93,6 +111,7 @@ class reMacQtApp(QMainWindow):
         layoutClient.addWidget(self.cmd_send_command)
 
         tabWdgt = QTabWidget()
+        tabWdgt.setFont(QtGui.QFont("Arial", 13))
         layoutServerOutputLine = QHBoxLayout()
         layoutServerOutputLine .addWidget(QLabel('Output:'))
         cmd_clear_server_output = QPushButton('')
