@@ -38,8 +38,6 @@ class mod_modHelp(mod_interface):
                     break
             if not moduleFound:
                 sRet += f'| Command / Module "{args[0]}" NOT FOUND!!!\n'
-        # else:
-        #     sRet += f'| Command / Module {args[1]} NOT FOUND\n'
         sRet += f'| \n'
         sRet += f'#========================================================================#\n'
         return sRet

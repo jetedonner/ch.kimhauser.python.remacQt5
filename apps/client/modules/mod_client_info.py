@@ -5,5 +5,3 @@ class mod_client_info(mod_client_interface):
     def setup_mod(self):
         print(f'Module Setup (mod_client_info) called successfully!')
 
-    # def run_mod(self, message):
-    #     return f"Server mod_client_info module answered: {super.run_mod(message)}"

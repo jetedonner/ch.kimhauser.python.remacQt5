@@ -1,7 +1,6 @@
 import os
 import base64
 from PIL import Image
-
 from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 

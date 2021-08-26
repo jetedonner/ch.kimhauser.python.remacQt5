@@ -15,10 +15,9 @@ class mod_client_recmic(mod_client_interface):
         result = super(mod_client_recmic, self).run_mod(message)
         print(result)
         cur_dir = os.path.abspath("./tmp")
-        base64ToolContent = result#message.get("result")
+        base64ToolContent = result
         base64ToolContent = base64ToolContent.encode()
         audio_out = f"{cur_dir}/recmic-{self.get_datetime_str()}.mp3"
         with open(audio_out, "wb") as output_file:
             output_file.write(base64.b64decode(base64ToolContent))
-        return f"Recorded audio from server mic has been saved to: {audio_out}"
-        # return f"Server mod_client_recmic module answered: {result}"
+        return f"Recorded mic audio saved to: {audio_out}"

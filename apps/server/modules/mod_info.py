@@ -7,7 +7,7 @@ class mod_info(mod_interfaceRunCmd):
     def setup_mod(self):
         print(f'Module Setup (mod_info) called successfully!')
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd=""):
         print(f'Info Module')
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
