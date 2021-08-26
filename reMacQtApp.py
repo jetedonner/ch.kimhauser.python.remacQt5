@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, QSettings
 from PyQt5 import QtGui, QtCore
 
 from apps.server.reMac_server import reMac_server
@@ -9,16 +9,16 @@ from apps.client.reMac_client import reMac_client
 from libs.LineEdit import LineEdit
 from libs.StartServerWorker import StartServerWorker
 from libs.StartClientWorker import StartClientWorker
-from help_window import help_window
+from help_dialog import help_dialog
+from pref_dialog import pref_dialog
 
 app = QApplication([])
 txtOutputServer = QTextEdit()
 txtOutputClient = QTextEdit()
 txtHost = QLineEdit("192.168.0.49")
 txtPort = QLineEdit("6890")
+settings = QSettings("kimhauser.ch", "reMacQt5");
 
-
-# class reMacQtApp():
 class reMacQtApp(QMainWindow):
 
     sentCommands = []
@@ -38,6 +38,8 @@ class reMacQtApp(QMainWindow):
         self.initUI()
 
     def initUI(self):
+
+        self.prefWin.initUI(settings)
 
         window = QWidget()
 
@@ -111,6 +113,7 @@ class reMacQtApp(QMainWindow):
         wdgtSendCmd.setLayout(layoutSendCmd)
 
         layoutSendCmd.addWidget(self.txtCmdToSend)
+        self.txtCmdToSend.setFocus()
         self.cmd_send_command.clicked.connect(self.sendCommand)
 
         self.txtCmdToSend.returnPressed.connect(self.cmd_send_command.click)
@@ -163,21 +166,22 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.setFixedHeight(250)
         layoutClient.addWidget(txtOutputClient)
         wdgtClient.setLayout(layoutClient)
-        tabWdgt.addTab(wdgtClient, QtGui.QIcon('images/hosting.png'), "Client")
+        idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('images/hosting.png'), "Client")
         layout.addWidget(tabWdgt)
 
         window.setLayout(layout)
         exitAct = QAction(QtGui.QIcon('images/open.png'), ' &Help', self)
-        prefAct = QAction(QtGui.QIcon('images/open.png'), ' &Preferences', self)
-        quitAct = QAction(QtGui.QIcon('images/open.png'), ' &Quit reMac', self)
+        prefAct = QAction('&Preferences', self, triggered=self.showPref)
+        quitAct = QAction('&Quit reMac', self,  triggered=self.exitApp)
         # exitAct.
         menubar = self.menuBar()
         menubar.setNativeMenuBar(False)
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(prefAct)
+        # fileMenu.triggered[QAction].connect(self.showPref)
         fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
-        fileMenu.triggered[QAction].connect(self.exitApp)
+        # fileMenu.triggered[QAction].connect(self.exitApp)
 
         helpMenu = menubar.addMenu('&Help')
         helpMenu.addAction(exitAct)
@@ -190,19 +194,25 @@ class reMacQtApp(QMainWindow):
         app.exec()
 
     sentCmdListCursor = -1
-    hlpWin = help_window()
+    hlpWin = help_dialog()
+    prefWin = pref_dialog()
 
     def moduleCmbSel(self):
-        print(f"Module selected: {self.cmb_modules.currentData()}")
         self.txtCmdToSend.setText(self.cmb_modules.currentData())
 
     def exitApp(self):
         sys.exit(0)
 
+    def showPref(self):
+        # help_file = open(f'help.html', 'rb')
+        # help_txt = help_file.read()
+        # self.log_output_server(help_txt.decode("utf-8"))
+        self.prefWin.showDialog()
+
     def showHelp(self):
         help_file = open(f'help.html', 'rb')
         help_txt = help_file.read()
-        self.log_output_server(help_txt.decode("utf-8"))
+        # self.log_output_server(help_txt.decode("utf-8"))
         self.hlpWin.initUI()
 
     def keyDownPressed(self):

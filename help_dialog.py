@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QTextBrowser, QPushButton
 
-class help_window(QDialog):
+class help_dialog(QDialog):
 
     def __init__(self):
         super().__init__()
