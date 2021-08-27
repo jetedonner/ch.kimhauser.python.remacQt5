@@ -175,7 +175,7 @@ class reMac_libserver(reMac_libbase):
             encoding = self.jsonheader["content-encoding"]
             self.request = self._json_decode(data, encoding)
             sret = f"received request {repr(self.request)} from {self.addr}"
-            print(sret)
+            # print(sret)
         else:
             # Binary or unknown content-type
             self.request = data

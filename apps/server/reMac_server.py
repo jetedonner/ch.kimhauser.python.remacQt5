@@ -60,7 +60,7 @@ class reMac_server():
         # else:
         #     _start()
 
-    def start_server(self, myHost = conHost, myPort = conPort, prg = None, prgng = None):
+    def start_server(self, myHost=conHost, myPort=conPort, prg=None, prgng=None):
         self.prgng = prgng
         conHost, conPort = myHost, int(myPort)
         self.start_server_thread(conHost, conPort, prg)
@@ -95,7 +95,8 @@ class reMac_server():
                         message = key.data
                         try:
                             sret = message.process_events(mask)
-                            self.prgng.emit(sret)
+                            if sret is not None and sret != "":
+                                self.prgng.emit(sret)
                         except Exception:
                             print(
                                 "main: error: exception for",

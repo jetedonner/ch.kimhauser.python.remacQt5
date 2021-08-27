@@ -11,7 +11,7 @@ class mod_clipboard(mod_interface):
         if param == "":
             clipboard_content = clipboard.paste()
             result = f'Clipboard content: {clipboard_content}'
-            print(result)
+            # print(result)
         else:
             args = param.split()
             if len(args) >= 1:
@@ -19,11 +19,11 @@ class mod_clipboard(mod_interface):
                     newval = ' '.join(args[1:]).replace("\"", "")
                     clipboard.copy(newval)
                     result = f'Clipboard replaced with: "{newval}"'
-                    print(result)
+                    # print(result)
                 elif args[0] == "-r":
                     clipboard_content = clipboard.paste()
                     result = f'Clipboard content: {clipboard_content}'
-                    print(result)
+                    # print(result)
         return result
 
     def mod_helptxt(self):

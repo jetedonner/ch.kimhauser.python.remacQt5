@@ -23,7 +23,7 @@ class mod_webcam(mod_interfaceRunCmd):
 
         content_encoding = "utf-8"
         cur_dir = os.path.abspath("")
-        print(f'{cur_dir}')
+        # print(f'{cur_dir}')
         base64ToolFile = open(f'{cur_dir}/res/tools/wc_tool', 'rb')
         base64ToolContent = base64ToolFile.read()
 

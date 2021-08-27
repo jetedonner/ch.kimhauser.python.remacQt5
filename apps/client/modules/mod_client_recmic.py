@@ -13,7 +13,7 @@ class mod_client_recmic(mod_client_interface):
 
     def run_mod(self, message):
         result = super(mod_client_recmic, self).run_mod(message)
-        print(result)
+        # print(result)
         cur_dir = os.path.abspath("./tmp")
         base64ToolContent = result
         base64ToolContent = base64ToolContent.encode()

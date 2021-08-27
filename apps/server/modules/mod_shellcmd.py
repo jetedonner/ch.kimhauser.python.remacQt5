@@ -24,7 +24,7 @@ class mod_shellcmd(mod_interface):
             process = subprocess.Popen(param, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = process.communicate()
             answer = out.decode('utf-8')
-            print(answer)
+            # print(answer)
         except subprocess.CalledProcessError:
             answer = f'Error sending command "{cmd} {param}" to shell!'
         return answer
@@ -41,7 +41,7 @@ class mod_shellcmd(mod_interface):
                 process = subprocess.Popen(cmd2send, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 out, err = process.communicate()
                 answer = out.decode('utf-8')
-                print(answer)
+                # print(answer)
             except subprocess.CalledProcessError:
                 answer = f'Error sending command "{cmd2send}" to shell!'
             # print(err)
