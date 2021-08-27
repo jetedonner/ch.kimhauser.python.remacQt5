@@ -1,6 +1,7 @@
 import os
 import base64
 import time
+from PIL import Image
 from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
@@ -21,4 +22,6 @@ class mod_client_webcam(mod_client_interface):
         image_out = f"{cur_dir}/webcam-{self.get_datetime_str()}.png"
         with open(image_out, "wb") as output_file:
             output_file.write(base64.b64decode(base64ToolContent))
+        with Image.open(image_out) as img:
+            img.show()
         return f"Webcam snapshot saved to: {image_out}"

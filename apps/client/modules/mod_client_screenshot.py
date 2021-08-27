@@ -1,6 +1,7 @@
 import os
 import base64
 import time
+from PIL import Image
 from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
@@ -26,4 +27,7 @@ class mod_client_screenshot(mod_client_interface):
 
         with open(sc_out, "wb") as output_file:
             output_file.write(base64.b64decode(base64ToolContent))
+
+        with Image.open(sc_out) as img:
+            img.show()
         return f"Screenshot saved to: {sc_out}"
