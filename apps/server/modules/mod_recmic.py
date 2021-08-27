@@ -71,7 +71,7 @@ class mod_recmic(mod_interfaceRunCmd):
                                      "With the param '-t <secs>' you can specify how long."),
             'cmd': 'rm [-t <secs>]',
             'ext': self.pritify4log(
-                   '-t\tSpecify how long the audio record will be (in seconds)\n'
-                   'Default record time is 5 seconds.')
+                   '-t\tSpecify how long the audio record will be (in seconds)\n\n'
+                   f'Default record time is {RECORD_SECONDS} seconds.')
         }
         return help_txt
