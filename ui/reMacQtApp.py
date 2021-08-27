@@ -10,8 +10,8 @@ from apps.server.reMac_server import reMac_server
 from apps.client.reMac_client import reMac_client
 from libs.StartServerWorker import StartServerWorker
 from libs.StartClientWorker import StartClientWorker
-from help_dialog import help_dialog
-from pref_dialog import pref_dialog
+from ui.help_dialog import help_dialog
+from ui.pref_dialog import pref_dialog
 
 app = QApplication([])
 txtOutputServer = QTextEdit()
@@ -123,7 +123,7 @@ class reMacQtApp(QMainWindow):
         layoutServerOutputLine = QHBoxLayout()
         layoutServerOutputLine .addWidget(QLabel('Output:'))
         cmd_clear_server_output = QPushButton('')
-        cmd_clear_server_output.setIcon(QtGui.QIcon('images/empty-set.png'))
+        cmd_clear_server_output.setIcon(QtGui.QIcon('res/images/empty-set.png'))
         cmd_clear_server_output.setIconSize(QtCore.QSize(16, 16))
         cmd_clear_server_output.setFixedWidth(48)
         cmd_clear_server_output.clicked.connect(self.clear_output_server)
@@ -139,12 +139,12 @@ class reMacQtApp(QMainWindow):
         txtOutputServer.setReadOnly(True)
         layoutServer.addWidget(txtOutputServer)
         wdgtServer.setLayout(layoutServer)
-        tabWdgt.addTab(wdgtServer, QtGui.QIcon('images/server.png'), "Server")
+        tabWdgt.addTab(wdgtServer, QtGui.QIcon('res/images/server.png'), "Server")
 
         layoutClientOutputLine = QHBoxLayout()
         layoutClientOutputLine.addWidget(QLabel('Output:'))
         cmd_clear_client_output = QPushButton('')
-        cmd_clear_client_output.setIcon(QtGui.QIcon('images/empty-set.png'))
+        cmd_clear_client_output.setIcon(QtGui.QIcon('res/images/empty-set.png'))
         cmd_clear_client_output.setIconSize(QtCore.QSize(16, 16))
         cmd_clear_client_output.setFixedWidth(48)
         cmd_clear_client_output.clicked.connect(self.clear_output_client)
@@ -159,11 +159,11 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.setFixedHeight(250)
         layoutClient.addWidget(txtOutputClient)
         wdgtClient.setLayout(layoutClient)
-        idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('images/hosting.png'), "Client")
+        idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('res/images/hosting.png'), "Client")
         layout.addWidget(tabWdgt)
 
         window.setLayout(layout)
-        exitAct = QAction(QtGui.QIcon('images/open.png'), ' &Help', self)
+        exitAct = QAction(QtGui.QIcon('res/images/open.png'), ' &Help', self)
         prefAct = QAction('&Preferences', self, triggered=self.showPref)
         quitAct = QAction('&Quit reMac', self,  triggered=self.exitApp)
 

@@ -1,4 +1,4 @@
-from reMacQtApp import reMacQtApp
+from ui.reMacQtApp import reMacQtApp
 
 
 def run_qt_app():
