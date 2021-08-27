@@ -37,8 +37,8 @@ class mod_info(mod_interfaceRunCmd):
                    '-a\tAll available information - the default (like no param)\n'
                    '-v\tOnly macOS version\n'
                    '-m\tSystem model <sysctl -n hw.model>\n'
-                   '-w|-wl\tAll Wifi-Infos\n'
-                   '-ws\tBasic Wifi-Infos\n'
+                   '-w|-wl\tAll Wifi-Info\n'
+                   '-ws\tBasic Wifi-Info only\n'
                    '-b\tInformation about the battery')
         }
         return help_txt

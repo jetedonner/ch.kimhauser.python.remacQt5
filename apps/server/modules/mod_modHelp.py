@@ -48,7 +48,8 @@ class mod_modHelp(mod_interface):
                     altCmd = reMacModules[keyTmp]
                     # sRet += f'| -{keyTmp} / {altCmd[1]}: {altCmd[2]}\n'
                     help_dict = altCmd[0].mod_helptxt()
-                    sRet += f'| Description:\n| {help_dict["desc"]}\n|\n'
+                    if len(args) == 1 or (len(args) == 2 and args[1] != "-c"):
+                        sRet += f'| Description:\n| {help_dict["desc"]}\n|\n'
                     sRet += f'| Call: {help_dict["cmd"]}\n|\n'
                     sRet += f'| Details:\n| {help_dict["ext"]}\n'
                     # sRet += f'| \n'

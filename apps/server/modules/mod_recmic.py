@@ -9,7 +9,7 @@ CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-RECORD_SECONDS = 2
+RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output123.wav"
 
 
@@ -17,18 +17,23 @@ class mod_recmic(mod_interfaceRunCmd):
     def setup_mod(self):
         print(f'Module Setup (mod_recmic) called successfully!')
 
-    def run_mod(self, cmd = ""):
-        print(f'mod_recmic Module')
+    def run_mod(self, cmd="", param=""):
+        args = param.split(" ")
+        if len(args) == 2:
+            if args[0] == "-t":
+                try:
+                    RECORD_SECONDS = int(args[1])
+                except Exception:
+                    pass
 
         p = pyaudio.PyAudio()
-
         stream = p.open(format=FORMAT,
                         channels=CHANNELS,
                         rate=RATE,
                         input=True,
                         frames_per_buffer=CHUNK)
 
-        print("* recording")
+        print(f"* recording ({RECORD_SECONDS} seconds)")
 
         frames = []
 
@@ -58,3 +63,15 @@ class mod_recmic(mod_interfaceRunCmd):
         os.remove(WAVE_OUTPUT_FILENAME)
         os.remove(WAVE_OUTPUT_FILENAME + ".mp3")
         return audio_64_encode.decode("utf-8")
+
+    def mod_helptxt(self):
+        help_txt = {
+            'desc': self.pritify4log("The 'Record microphone' module records audio from the\n"
+                                     "servers microphone if it's activated and listening.\n"
+                                     "With the param '-t <secs>' you can specify how long."),
+            'cmd': 'rm [-t <secs>]',
+            'ext': self.pritify4log(
+                   '-t\tSpecify how long the audio record will be (in seconds)\n'
+                   'Default record time is 5 seconds.')
+        }
+        return help_txt
