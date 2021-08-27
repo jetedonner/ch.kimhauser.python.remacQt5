@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QTextBrowser, QPushButton, QCheckBox, QApplication
-from libs.LineEdit import LineEdit
+from ui.libs.LineEdit import LineEdit
 from PyQt5.QtCore import QSettings
 
 

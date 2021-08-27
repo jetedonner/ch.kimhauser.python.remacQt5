@@ -5,11 +5,11 @@ from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLay
 from PyQt5.QtCore import QThread, QSettings
 from PyQt5 import QtGui, QtCore
 
-from libs.LineEdit import LineEdit
+from ui.libs.LineEdit import LineEdit
 from apps.server.reMac_server import reMac_server
 from apps.client.reMac_client import reMac_client
-from libs.StartServerWorker import StartServerWorker
-from libs.StartClientWorker import StartClientWorker
+from ui.libs.StartServerWorker import StartServerWorker
+from ui.libs.StartClientWorker import StartClientWorker
 from ui.help_dialog import help_dialog
 from ui.pref_dialog import pref_dialog
 
