@@ -1,5 +1,6 @@
-import os
+import time
 import subprocess
+
 
 from apps.server.modules.libs.mod_interface import mod_interface
 
@@ -7,26 +8,35 @@ EXIT_CMD = "exit"
 
 class mod_shellcmd(mod_interface):
 
+    command = ""
+    running = False
 
     def setup_mod(self):
         print(f'Module Setup (mod_shellcmd) called successfully!')
         pass
 
-    def run_cmd(self, cmd = "", param = ""):
+    def run_cmd(self, cmd="", param=""):
+        self.running = True
+        self.command = param
         answer = ""
-        # while True:
-        # cntrl-c to quit
-        # cmd2send = input('$: ')
-        try:
-            # args = cmd2send.split(' ')
-            # if cmd == 'exit':
-            #     break
-            process = subprocess.Popen(param, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = process.communicate()
-            answer = out.decode('utf-8')
-            # print(answer)
-        except subprocess.CalledProcessError:
-            answer = f'Error sending command "{cmd} {param}" to shell!'
+        # if param == "":
+        cond = True
+        while cond:
+            # cntrl-c to quit
+            # cmd2send = input('$: ')
+            if self.command == "":
+                time.sleep(3)
+                continue
+            try:
+                process = subprocess.Popen(param, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                out, err = process.communicate()
+                answer = out.decode('utf-8')
+            except subprocess.CalledProcessError:
+                answer = f'Error sending command "{cmd} {param}" to shell!'
+            if param != "":
+                cond = False
+
+        self.running = False
         return answer
 
     def run_mod(self, cmd = ""):

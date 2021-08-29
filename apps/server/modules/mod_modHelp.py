@@ -40,7 +40,7 @@ class mod_modHelp(mod_interface):
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
         elif len(args) >= 1:
-            sRet += f'| Specific command help for module "{args[0]}":\n'
+            sRet += f'| Command help for module "{args[0]}":\n'
             sRet += f'| \n'
             moduleFound = False
             for keyTmp in list(reMacModules):

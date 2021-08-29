@@ -247,11 +247,13 @@ class reMacQtApp(QMainWindow):
             lambda: self.serverStarted(True)
         )
 
-    def runStartClient(self):
+    def runStartClient(self, cmd=""):
         # Step 2: Create a QThread object
         self.threadClient = QThread()
         # Step 3: Create a worker object
-        self.workerClient = StartClientWorker(self)
+        if cmd == False:
+            cmd = ""
+        self.workerClient = StartClientWorker(self, cmd)
         # Step 4: Move worker to the thread
         self.workerClient.moveToThread(self.threadClient)
         # Step 5: Connect signals and slots
@@ -278,13 +280,23 @@ class reMacQtApp(QMainWindow):
 
     clientPrg = None
 
-    def startClient(self, prg):
+    def startClient(self, prg, cmd=""):
         self.clientPrg = prg
         shost = txtHost.text()
         sport = txtPort.text()
         prg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
         # self.stsBar.showMessage(f"Starting reMacApp Client: {shost}:{sport} ...", STATUSBAR_MSG_MSECS)
-        self.myreMac_client.start_client(shost, sport, prg)
+        msg = ""
+        params = ""
+        if cmd != "":
+            args = cmd.split(" ", 1)
+            if len(args) >= 1:
+                msg = args[0]
+                if len(args) >= 2:
+                    params = args[1]
+
+
+        self.myreMac_client.start_client(shost, sport, prg, msg, params)
 
     def sendCommand(self):
         cmd2Send = self.txtCmdToSend.text().strip()
@@ -299,8 +311,12 @@ class reMacQtApp(QMainWindow):
         sport = txtPort.text()
 
         self.log_output_client(f'Sending command "{cmd2Send}" to: {shost}:{sport} ...')
-        # self.clientPrg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
-        self.myreMac_client.start_client(shost, sport, self.clientPrg, cmd2Send)
+        cmd2Send = cmd2Send.lower()
+        if cmd2Send.startswith("sh"):
+            self.runStartClient(cmd2Send)
+        else:
+            # self.clientPrg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
+            self.myreMac_client.start_client(shost, sport, self.clientPrg, cmd2Send)
 
     def clear_output_server(self):
         txtOutputServer.setText("")

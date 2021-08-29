@@ -121,3 +121,20 @@ class mod_chrome_logins(mod_interface):
         con.close()
         os.remove('chrome_logins')
         return sresult
+
+    def mod_helptxt(self):
+        help_txt = {
+            'desc': self.pritify4log("The 'Chrome Login' module returns all entries of the\n"
+                                     "server's chrome login DB. It makes a copy of the current\n"
+                                     "DB and then reads the 'logins' entries, decrypts them and\n"
+                                     "returns them to the client as JSON."),
+            'cmd': 'cl [-c [<db_filename>]]',
+            'ext': self.pritify4log(
+                   "-c\tDownload the chrome login DB to client. Optional: <db_filename>\n\n"
+                   "Per default the module returns all 'logins' entries of the chrome\n"
+                   "logins DB as JSON-string. You can also download a copy of the\n"
+                   "whole DB to the client with the '-c' param. Default the DB copy will\n"
+                   "be saved as 'tmp/chrome_login_db<timestamp>' but you can choose to\n"
+                   "specify a custom filename with argument <db_filename> to the '-c' param.")
+        }
+        return help_txt

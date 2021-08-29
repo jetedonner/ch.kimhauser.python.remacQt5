@@ -92,7 +92,10 @@ class reMac_libserver(reMac_libbase):
                 or input == "sc":
             return reMacModules[input][0].run_mod(input, value)
         elif input == "sh":
-            return reMacModules["sh"][0].run_cmd(input, value)
+            if mod_shellcmd(reMacModules["sh"][0]).running == True:
+                mod_shellcmd(reMacModules["sh"][0]).command = value
+            else:
+                return reMacModules["sh"][0].run_cmd(input, value)
         elif input.startswith("mh"):
             return reMacModules["mh"][0].print_client_help("reMac", reMacModules, value)
         else:

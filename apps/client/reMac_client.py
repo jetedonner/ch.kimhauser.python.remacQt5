@@ -84,7 +84,7 @@ class reMac_client():
     def send2_client(self, msg="mh", valz="", myHost=conHost, myPort=conPort):
         self.start_client(myHost, myPort, msg, valz)
 
-    def start_client(self, myHost = conHost, myPort = conPort, prg = None, msg="mh", valz=""):
+    def start_client(self, myHost=conHost, myPort=conPort, prg=None, msg="mh", valz=""):
         self.prg = prg
         try:
             host, port = myHost, int(myPort)

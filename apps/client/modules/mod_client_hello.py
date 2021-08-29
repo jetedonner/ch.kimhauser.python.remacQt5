@@ -6,4 +6,4 @@ class mod_client_hello(mod_client_interface):
         print(f'Module Setup (mod_client_hello) called successfully!')
 
     def run_mod(self, message):
-        return f"Server hello module answered: {super(mod_client_hello, self).run_mod(message)}"
+        return f"Client hello module answered: {super(mod_client_hello, self).run_mod(message)}"

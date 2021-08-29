@@ -3,8 +3,8 @@ import base64
 # from PIL import Image
 from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
-OUTPUT_PATH = "tmp/"
-OUTPUT_FILE = f"{OUTPUT_PATH}sc_tmp.png"
+OUTPUT_PATH = "/tmp"
+OUTPUT_FILE = f"{OUTPUT_PATH}/sc_tmp.png"
 TOOL_CMD = "screencapture -x"
 
 

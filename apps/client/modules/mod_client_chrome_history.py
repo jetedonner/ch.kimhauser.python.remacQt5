@@ -11,4 +11,4 @@ class mod_client_chrome_history(mod_client_interface):
         result = json.loads(result)
         result = json.dumps(result, indent=4, sort_keys=True)
         # result = json.dumps(result, indent=4, sort_keys=True)
-        return f"Server mod_client_chrome_history module answered: \n{result}"
+        return f"Client mod_client_chrome_history module answered: \n{result}"
