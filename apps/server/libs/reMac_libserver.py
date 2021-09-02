@@ -13,6 +13,7 @@ from apps.server.modules import mod_modHelp
 from apps.server.modules import mod_info
 from apps.server.modules import mod_download
 from apps.server.modules import mod_upload
+from apps.server.modules import mod_help
 
 from apps.libs.reMac_libbase import reMac_libbase
 
@@ -30,7 +31,8 @@ reMacModules = {
     'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>'],
     'in': [mod_info.mod_info(), 'info', 'Call info module', 'in'],
     'dl': [mod_download.mod_download(), 'download', 'Call download module (to app "/tmp")', 'dl <remote filename>'],
-    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>']
+    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>'],
+    'hp': [mod_help.mod_help(), 'help', 'Call help module', 'hp']
 }
 
 
@@ -82,6 +84,7 @@ class reMac_libserver(reMac_libbase):
                 or input == "ch" \
                 or input == "cl" \
                 or input == "wc" \
+                or input == "hp" \
                 or input == "d":  # or input == "help":
             return reMacModules[input][0].run_mod()
         elif input == "dl" \
@@ -115,6 +118,7 @@ class reMac_libserver(reMac_libbase):
                 or action == "rm" \
                 or action == "in" \
                 or action == "dl" \
+                or action == "hp" \
                 or action.startswith("mh"):
             answer = self.processInput(action, value)
             if action == "dl":

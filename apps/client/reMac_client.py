@@ -36,6 +36,7 @@ class reMac_client():
                 or action == "in" \
                 or action == "sh" \
                 or action == "dl" \
+                or action == "hp" \
                 or action.startswith("mh"):
             return dict(
                 type="text/json",

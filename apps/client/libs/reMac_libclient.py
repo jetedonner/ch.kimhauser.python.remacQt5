@@ -14,6 +14,7 @@ from apps.client.modules.mod_client_webcam import mod_client_webcam
 from apps.client.modules.mod_client_shellcmd import mod_client_shellcmd
 from apps.client.modules.mod_client_download import mod_client_download
 from apps.client.modules.mod_client_upload import mod_client_upload
+from apps.client.modules.mod_client_help import mod_client_help
 
 
 class reMac_libclient(reMac_libbase):
@@ -30,7 +31,8 @@ class reMac_libclient(reMac_libbase):
         'wc': [mod_client_webcam(), 'Module Webcam', 'Call webcam module', 'wc'],
         'sh': [mod_client_shellcmd(), 'Module shell command', 'Call shell command module', 'sh'],
         'dl': [mod_client_download(), 'Module download', 'Call download module', 'dl'],
-        'ul': [mod_client_upload(), 'Module upload', 'Call upload module', 'ul']
+        'ul': [mod_client_upload(), 'Module upload', 'Call upload module', 'ul'],
+        'hp': [mod_client_help(), 'Module help', 'Call help module', 'hp']
     }
 
     prg = None
@@ -106,6 +108,8 @@ class reMac_libclient(reMac_libbase):
             return self.reMacModules["dl"][0].run_mod(content)
         elif action.startswith("ul"):
             return self.reMacModules["ul"][0].run_mod(content)
+        elif action.startswith("hp"):
+            return self.reMacModules["hp"][0].run_mod(content)
         else:
             print(f"got result: {result}, action: {action}")
 

@@ -67,3 +67,20 @@ class mod_shellcmd(mod_interface):
         #     except subprocess.CalledProcessError:
         #         answer = f'Error sending comand "{cmd2send}" to shell!'
         return answer
+
+    def mod_helptxt(self):
+        help_txt = {
+            'desc': self.pritify4log("The 'Shell Command' module return opens a shell\n"
+                                     "session on the server, executes a command and\n"
+                                     "returns the result. You can also open a persistent\n"
+                                     "shell session and continue to execute commands until\n"
+                                     "you send the exit command which terminates the session\n¨"
+                                     "and the module."),
+            'cmd': 'sh [<shell command>]',
+            'ext': self.pritify4log(
+                   'Per default the module opens a persistent shell session and\n'
+                   'keeps the connection open. If you specify an argument to\n'
+                   'the "sh" module only the command will be executed and\n'
+                   'the result returned after that the connection will be closed.')
+        }
+        return help_txt

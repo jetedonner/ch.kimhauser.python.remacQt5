@@ -29,7 +29,7 @@ class mod_info(mod_interfaceRunCmd):
 
     def mod_helptxt(self):
         help_txt = {
-            'desc': self.pritify4log("The 'Info' module returns informations about\n"
+            'desc': self.pritify4log("The 'Info' module returns information about\n"
                                      "the server system like macOS version, pc model,\n"
                                      "wifi info or the battery condition."),
             'cmd': 'in [-a | -v | -m | -w | -wl | -ws | -b]',

@@ -219,9 +219,6 @@ class reMacQtApp(QMainWindow):
         conHost = "192.168.0.49"
         conPort = "6890"
 
-        # if ok == 1:
-        #     print(f"Starting reMacApp Server: {conHost}:{conPort} ...")
-        #     self.log_output_server(f"Starting reMacApp Server: {conHost}:{conPort} ...")
         if ok == 2:
             self.cmd_start_server.setText("Stop Server")
             self.log_output_server(f"reMac Server started successfully - Listening on: {conHost}:{conPort}", True)
