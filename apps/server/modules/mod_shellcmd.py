@@ -39,11 +39,11 @@ class mod_shellcmd(mod_interface):
         self.running = False
         return answer
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd=""):
         answer = ""
         while True:
             # cntrl-c to quit
-            cmd2send = input('$: ')
+            cmd2send = cmd #input('$: ')
             try:
                 args = cmd2send.split(' ')
                 if args[0] == 'exit':

