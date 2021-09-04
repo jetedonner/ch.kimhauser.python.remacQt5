@@ -5,6 +5,11 @@ from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
 class mod_client_recmic(mod_client_interface):
+
+    cmd_short = "rm"
+    cmd_long = "recmic"
+    cmd_desc = "Record microphone client module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_client_recmic) called successfully!')
 

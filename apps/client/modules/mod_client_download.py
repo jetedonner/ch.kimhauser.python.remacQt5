@@ -5,6 +5,11 @@ from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
 class mod_client_download(mod_client_interface):
+
+    cmd_short = "dl"
+    cmd_long = "download"
+    cmd_desc = "Download client module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_client_download) called successfully!')
 

@@ -3,6 +3,11 @@ from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
 class mod_client_chrome_history(mod_client_interface):
+
+    cmd_short = "ch"
+    cmd_long = "chromehistory"
+    cmd_desc = "Chrome history client module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_client_chrome_history) called successfully!')
 

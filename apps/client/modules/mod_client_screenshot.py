@@ -6,6 +6,11 @@ from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
 class mod_client_screenshot(mod_client_interface):
+
+    cmd_short = "sc"
+    cmd_long = "screenshot"
+    cmd_desc = "Screenshot client module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_client_screenshot) called successfully!')
 
