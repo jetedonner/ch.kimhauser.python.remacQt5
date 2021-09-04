@@ -2,6 +2,11 @@ from apps.server.modules.libs.mod_interface import mod_interface
 
 
 class mod_hello(mod_interface):
+
+    cmd_short = "hw"
+    cmd_long = "helloworld"
+    cmd_desc = "Hello World module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_hello) called successfully!')
 

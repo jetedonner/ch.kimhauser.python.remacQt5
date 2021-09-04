@@ -8,6 +8,10 @@ OUTPUT_PATH = "/tmp"
 
 class mod_webcam(mod_interfaceRunCmd):
 
+    cmd_short = "wc"
+    cmd_long = "webcam"
+    cmd_desc = "Webcam module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_webcam) called successfully!')
         pass

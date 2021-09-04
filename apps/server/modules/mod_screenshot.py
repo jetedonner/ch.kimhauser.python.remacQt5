@@ -10,6 +10,10 @@ TOOL_CMD = "screencapture -x"
 
 class mod_screenshot(mod_interfaceRunCmd):
 
+    cmd_short = "sc"
+    cmd_long = "screenshot"
+    cmd_desc = "Screenshot module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_screenshot) called successfully!')
 

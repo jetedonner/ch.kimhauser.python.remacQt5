@@ -4,6 +4,11 @@ from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 
 class mod_info(mod_interfaceRunCmd):
+
+    cmd_short = "in"
+    cmd_long = "info"
+    cmd_desc = "Info module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_info) called successfully!')
 

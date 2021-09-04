@@ -3,6 +3,11 @@ from apps.server.modules.libs.mod_interface import mod_interface
 
 
 class mod_modHelp(mod_interface):
+
+    cmd_short = "mh"
+    cmd_long = "modhelp"
+    cmd_desc = "Module help module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_modHelp) called successfully!')
 
@@ -34,20 +39,20 @@ class mod_modHelp(mod_interface):
         sRet += f'| \n'
         if len(args) == 0:
             sRet += f'| Modules and command help (all active modules):\n'
-            for keyTmp in list(reMacModules):
-                altCmd = reMacModules[keyTmp]
-                sRet += f'| {keyTmp} / {altCmd[1]}:\t\t{altCmd[2]}\n'
+            for mod in reMacModules:
+                altCmd = mod.cmd_long
+                sRet += f'| {mod.cmd_short} / {mod.cmd_long}:\t\t{mod.cmd_desc}\n'
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
         elif len(args) >= 1:
             sRet += f'| Command help for module "{args[0]}":\n'
             sRet += f'| \n'
             moduleFound = False
-            for keyTmp in list(reMacModules):
-                if keyTmp == args[0]:
-                    altCmd = reMacModules[keyTmp]
+            for mod in reMacModules:
+                if mod.cmd_short == args[0]:
+                    altCmd = mod.cmd_long
                     # sRet += f'| -{keyTmp} / {altCmd[1]}: {altCmd[2]}\n'
-                    help_dict = altCmd[0].mod_helptxt()
+                    help_dict = mod.mod_helptxt()
                     if len(args) == 1 or (len(args) == 2 and args[1] != "-c"):
                         sRet += f'| Description:\n| {help_dict["desc"]}\n|\n'
                     sRet += f'| Call: {help_dict["cmd"]}\n|\n'

@@ -21,6 +21,11 @@ except NameError:
 
 
 class mod_chrome_logins(mod_interface):
+
+    cmd_short = "cl"
+    cmd_long = "chromelogins"
+    cmd_desc = "Chrome logins module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_chrome_logins) called successfully!')
 

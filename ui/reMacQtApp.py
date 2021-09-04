@@ -14,6 +14,8 @@ from ui.libs.StartClientWorker import StartClientWorker
 from ui.help_dialog import help_dialog
 from ui.pref_dialog import pref_dialog
 
+import config
+
 app = QApplication([])
 txtOutputServer = QTextEdit()
 txtOutputClient = QTextEdit()
@@ -222,9 +224,16 @@ class reMacQtApp(QMainWindow):
 
         if ok == 2:
             self.cmd_start_server.setText("Stop Server")
-            self.log_output_server(f"reMac Server started successfully - Listening on: {conHost}:{conPort}", True)
+            self.log_output_server(f"> reMac Server started successfully - Listening on: {conHost}:{conPort}", True)
 
     def runStartServer(self):
+        if self.cmd_start_server.text() == "Stop Server":
+            print("Stopping server!!!")
+            self.myreMac_server.stop_server()
+            self.thread.quit()
+            self.cmd_start_server.setText("Start Server")
+            return
+
         # Step 2: Create a QThread object
         self.thread = QThread()
         # Step 3: Create a worker object
@@ -240,6 +249,7 @@ class reMacQtApp(QMainWindow):
         self.worker.progress.connect(self.serverStarted)
         self.worker.progressng.connect(self.log_output_server)
         self.thread.start()
+
 
         self.thread.finished.connect(
             lambda: self.serverStarted(True)
@@ -275,9 +285,15 @@ class reMacQtApp(QMainWindow):
         sport = txtPort.text()
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
-        sRet = f'\n\n#========================================================================#\n'
-        sRet += f'| reMac Server - IP: {local_ip}\n'
-        sRet += f'| Created by Kim-David Hauser, (C.) 2021-09-02\n'
+        sRet = f'#========================================================================#\n'
+        sRet += f'| \n'
+        sRet += f'| {config.REMAC_APP_NAME} Server - {config.REMAC_APP_DESC}\n|\n'
+        sRet += f'| - IP: {shost}\n'
+        sRet += f'| - Port: {sport}\n|\n'
+        sRet += f'| Created by {config.REMAC_APP_AUTHOR}, (C.) {config.REMAC_APP_DATE}\n'
+        sRet += f'| \n'
+        sRet += f'| Link: {config.REMAC_APP_LINK}\n'
+        sRet += f'| Email: {config.REMAC_APP_EMAIL}\n'
         sRet += f'| \n'
         sRet += f'| Description:\n'
         sRet += f'| The reMac suite is a remote access and administration tool for macOS.\n'
@@ -299,13 +315,15 @@ class reMacQtApp(QMainWindow):
         sRet += f'| - http://kimhauser.ch/index.php/projects/remac\n'
         sRet += f'| \n'
         sRet += f'| Credits:\n'
-        sRet += f'| - ...\n'
-        sRet += f'| - ...\n'
+        for i, (k, v) in enumerate(config.REMAC_APP_CREDITS.items()):
+        # for txt, link in config.REMAC_APP_CREDITS:
+            sRet += f'| - {k}: {v}\n'
+        # sRet += f'| - ...\n'
+        # sRet += f'| - ...\n'
         sRet += f'| \n'
         sRet += f'#========================================================================#\n'
         sRet += f' \n'
-        sRet += f'Starting reMacApp Server: {shost}:{sport} ...\n'
-        # prgng.emit(f"Starting reMacApp Server: {shost}:{sport} ...")
+        sRet += f'Starting reMacApp Server: {shost}:{sport} ...'
         prgng.emit(sRet)
         self.myreMac_server.start_server(shost, sport, prg, prgng)
 

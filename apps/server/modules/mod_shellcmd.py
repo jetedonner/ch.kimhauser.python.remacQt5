@@ -8,6 +8,10 @@ EXIT_CMD = "exit"
 
 class mod_shellcmd(mod_interface):
 
+    cmd_short = "sh"
+    cmd_long = "shellcmd"
+    cmd_desc = "Shell command module"
+
     command = ""
     running = False
 

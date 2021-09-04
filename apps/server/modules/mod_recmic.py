@@ -8,6 +8,10 @@ from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 class mod_recmic(mod_interfaceRunCmd):
 
+    cmd_short = "rm"
+    cmd_long = "recmic"
+    cmd_desc = "Record microphone module"
+
     CHUNK = 1024
     FORMAT = pyaudio.paInt16
     CHANNELS = 1

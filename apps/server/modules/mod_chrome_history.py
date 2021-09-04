@@ -7,6 +7,11 @@ from apps.server.modules.libs.mod_interface import mod_interface
 
 
 class mod_chrome_history(mod_interface):
+
+    cmd_short = "ch"
+    cmd_long = "chromehistory"
+    cmd_desc = "Chrome history module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_chrome_history) called successfully!')
 

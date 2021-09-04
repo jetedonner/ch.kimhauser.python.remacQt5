@@ -5,6 +5,10 @@ from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 class mod_upload(mod_interfaceRunCmd):
 
+    cmd_short = "ul"
+    cmd_long = "upload"
+    cmd_desc = "Upload module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_upload) called successfully!')
 

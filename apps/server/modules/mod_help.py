@@ -3,6 +3,11 @@ from apps.server.modules.libs.mod_interface import mod_interface
 
 
 class mod_help(mod_interface):
+
+    cmd_short = "hp"
+    cmd_long = "help"
+    cmd_desc = "Help module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_help) called successfully!')
 

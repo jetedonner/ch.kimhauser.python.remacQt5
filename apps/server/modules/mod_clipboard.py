@@ -3,6 +3,11 @@ from apps.server.modules.libs.mod_interface import mod_interface
 
 
 class mod_clipboard(mod_interface):
+
+    cmd_short = "cb"
+    cmd_long = "clipboard"
+    cmd_desc = "Clipboard module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_clipboard) called successfully!')
 

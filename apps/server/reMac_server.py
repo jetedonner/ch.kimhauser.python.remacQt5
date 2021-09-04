@@ -66,19 +66,20 @@ class reMac_server():
         self.start_server_thread(conHost, conPort, prg)
 
     def stop_server(self):
-        if lsock is not None:
-            lsock.close()
+        if self.lsock is not None:
+            self.lsock.close()
+            # self.sel.close()
 
     def start_server_thread(self, conHost, conPort, prg = None):
-        lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Avoid bind() exception: OSError: [Errno 48] Address already in use
-        lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        lsock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-        lsock.bind((conHost, conPort))
-        lsock.listen()
-        lsock.setblocking(False)
-        sel.register(lsock, selectors.EVENT_READ, data=None)
+        self.lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.lsock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+        self.lsock.bind((conHost, conPort))
+        self.lsock.listen()
+        self.lsock.setblocking(False)
+        sel.register(self.lsock, selectors.EVENT_READ, data=None)
         prg.emit(2)
         # with keyboard.Listener(on_press=self.on_press) as listener:
         #     listener.join()

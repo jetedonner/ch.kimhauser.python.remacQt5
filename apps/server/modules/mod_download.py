@@ -4,6 +4,10 @@ from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 class mod_download(mod_interfaceRunCmd):
 
+    cmd_short = "dl"
+    cmd_long = "download"
+    cmd_desc = "Download module"
+
     def setup_mod(self):
         print(f'Module Setup (mod_download) called successfully!')
 
