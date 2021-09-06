@@ -8,7 +8,7 @@ class ReMacServerCli:
     myReMacServer = reMac_server()
 
     def main(self):
-        if len(sys.argv) == 3:
+        if len(sys.argv) >= 3:
             self.myReMacServer.start_server(sys.argv[1], sys.argv[2])
 
 
