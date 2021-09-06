@@ -53,7 +53,7 @@ class reMacQtApp(QMainWindow):
         layoutModuleCommand = QVBoxLayout()
 
         layout = QVBoxLayout()
-        self.setFixedWidth(710)
+        self.setFixedWidth(725)
 
         layConn = QHBoxLayout()
         wdgtConn = QGroupBox("Connection:")

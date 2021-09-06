@@ -7,7 +7,7 @@ from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 class mod_client_webcam(mod_client_interface):
 
-    cmd_short = "wd"
+    cmd_short = "wc"
     cmd_long = "webcam"
     cmd_desc = "Webcam client module"
 

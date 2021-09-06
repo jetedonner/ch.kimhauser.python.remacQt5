@@ -7,7 +7,7 @@ setup(
               'apps.server', 'apps.server.libs', 'apps.server.modules', 'apps.server.modules.libs', 'libs'],
     url='http://kimhauser.ch/index.php/projects/remac',
     license='MIT',
-    author='dave',
+    author='DaVe',
     author_email='kim@kimhauser.ch',
     description='reMac - Remote access and administration for macOS'
 )
