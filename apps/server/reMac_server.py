@@ -80,7 +80,8 @@ class reMac_server():
         self.lsock.listen()
         self.lsock.setblocking(False)
         sel.register(self.lsock, selectors.EVENT_READ, data=None)
-        prg.emit(2)
+        if prg is not None:
+            prg.emit(2)
         # with keyboard.Listener(on_press=self.on_press) as listener:
         #     listener.join()
 
@@ -97,7 +98,8 @@ class reMac_server():
                         try:
                             sret = message.process_events(mask)
                             if sret is not None and sret != "":
-                                self.prgng.emit(sret)
+                                if self.prgng is not None:
+                                    self.prgng.emit(sret)
                         except Exception:
                             print(
                                 "main: error: exception for",
