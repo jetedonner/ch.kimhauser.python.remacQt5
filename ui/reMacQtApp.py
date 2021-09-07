@@ -1,9 +1,11 @@
+import os
 import sys
 import socket
+import xml.dom.minidom
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
     QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
-from PyQt5.QtCore import QThread, QSettings
+from PyQt5.QtCore import QThread, QSettings, QFile, QTextStream
 from PyQt5 import QtGui, QtCore
 
 from ui.libs.LineEdit import LineEdit
@@ -13,15 +15,19 @@ from ui.libs.StartServerWorker import StartServerWorker
 from ui.libs.StartClientWorker import StartClientWorker
 from ui.help_dialog import help_dialog
 from ui.pref_dialog import pref_dialog
+from apps.libs.reMac_createDeamon import reMac_createDeamon
 
 import config
 
 app = QApplication([])
 txtOutputServer = QTextEdit()
 txtOutputClient = QTextEdit()
+txtOutputLaunchDeamon = QTextEdit()
 txtHost = QLineEdit("192.168.0.49")
 txtPort = QLineEdit("6890")
 settings = QSettings("kimhauser.ch", "reMacQt5");
+txtLdKey = QLineEdit("ch.kimhauser.macos.remac.launchdeamon")
+txtLdProgram = QLineEdit("remac_lanuchdeamon")
 
 
 class reMacQtApp(QMainWindow):
@@ -29,6 +35,7 @@ class reMacQtApp(QMainWindow):
     sentCommands = []
     myreMac_server = reMac_server()
     myreMac_client = reMac_client()
+    myreMac_createDeamon = reMac_createDeamon()
 
     cmd_start_server = QPushButton('Start Server')
     cmd_send_command = QPushButton('Send command')
@@ -51,6 +58,10 @@ class reMacQtApp(QMainWindow):
         wdgtClient = QWidget()
         layoutClient = QVBoxLayout()
         layoutModuleCommand = QVBoxLayout()
+
+        wdgtLaunchDeamon = QWidget()
+        layoutLaunchDeamon = QVBoxLayout()
+        # layoutModuleCommand = QVBoxLayout()
 
         layout = QVBoxLayout()
         self.setFixedWidth(725)
@@ -144,6 +155,7 @@ class reMacQtApp(QMainWindow):
         wdgtServer.setLayout(layoutServer)
         tabWdgt.addTab(wdgtServer, QtGui.QIcon('res/images/server.png'), "Server")
 
+
         layoutClientOutputLine = QHBoxLayout()
         layoutClientOutputLine.addWidget(QLabel('Output:'))
         cmd_clear_client_output = QPushButton('')
@@ -163,6 +175,48 @@ class reMacQtApp(QMainWindow):
         layoutClient.addWidget(txtOutputClient)
         wdgtClient.setLayout(layoutClient)
         idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('res/images/hosting.png'), "Client")
+
+        # layLaunchDeamon = QVBoxLayout()
+        # wdgtLaunchDeamon = QWidget()
+        # layLaunchDeamon.addWidget(wdgtLaunchDeamon)
+        #
+        layoutLaunchCtrlOutputLine = QHBoxLayout()
+        layoutLaunchCtrlOutputLine.addWidget(QLabel('Output:'))
+
+        cmd_clear_launchdeamon_output = QPushButton('')
+        cmd_clear_launchdeamon_output.setIcon(QtGui.QIcon('res/images/empty-set.png'))
+        cmd_clear_launchdeamon_output.setIconSize(QtCore.QSize(16, 16))
+        cmd_clear_launchdeamon_output.setFixedWidth(48)
+        # cmd_clear_launchdeamon_output.clicked.connect(self.clear_output_server)
+        layoutLaunchCtrlOutputLine.addWidget(cmd_clear_launchdeamon_output)
+
+        wdgtLaunchCtrlOutputLine = QWidget()
+        wdgtLaunchCtrlOutputLine.setLayout(layoutLaunchCtrlOutputLine)
+        cmd_create_launch_deamon = QPushButton('Create Launch deamon')
+        cmd_create_launch_deamon.clicked.connect(self.create_launch_deamon)
+
+        layoutLaunchCtrlLdKey = QHBoxLayout()
+        layoutLaunchCtrlLdKey.addWidget(QLabel("Launch deamon key:"))
+        layoutLaunchCtrlLdKey.addWidget(txtLdKey)
+        wdgtLaunchCtrlLdKey = QWidget()
+        wdgtLaunchCtrlLdKey.setLayout(layoutLaunchCtrlLdKey)
+
+        layoutLaunchCtrlLdProgram = QHBoxLayout()
+        layoutLaunchCtrlLdProgram.addWidget(QLabel("Launch deamon program:"))
+        layoutLaunchCtrlLdProgram.addWidget(txtLdProgram)
+        wdgtLaunchCtrlLdProgramm = QWidget()
+        wdgtLaunchCtrlLdProgramm.setLayout(layoutLaunchCtrlLdProgram)
+
+        layoutLaunchDeamon.addWidget(wdgtLaunchCtrlLdKey)
+        layoutLaunchDeamon.addWidget(wdgtLaunchCtrlLdProgramm)
+        layoutLaunchDeamon.addWidget(cmd_create_launch_deamon)
+        layoutLaunchDeamon.addWidget(wdgtLaunchCtrlOutputLine)
+        layoutLaunchDeamon.addWidget(txtOutputLaunchDeamon)
+
+        wdgtLaunchDeamon.setLayout(layoutLaunchDeamon)
+        idx = tabWdgt.addTab(wdgtLaunchDeamon, QtGui.QIcon('res/images/demon.png'), "Launch deamon")
+
+
         layout.addWidget(tabWdgt)
 
         window.setLayout(layout)
@@ -193,6 +247,10 @@ class reMacQtApp(QMainWindow):
     sentCmdListCursor = -1
     hlpWin = help_dialog()
     prefWin = pref_dialog()
+
+    def create_launch_deamon(self):
+        arrRet = self.myreMac_createDeamon.createDeamon(txtLdKey.text(), txtLdProgram.text())
+        txtOutputLaunchDeamon.setPlainText(arrRet[0])
 
     def moduleCmbSel(self):
         self.txtCmdToSend.setText(self.cmb_modules.currentData())
@@ -266,19 +324,8 @@ class reMacQtApp(QMainWindow):
         self.workerClient.moveToThread(self.threadClient)
         # Step 5: Connect signals and slots
         self.threadClient.started.connect(self.workerClient.run)
-
-        # self.workerClient.finished.connect(self.threadClient.quit)
-        # self.workerClient.finished.connect(self.workerClient.deleteLater)
-
-        # self.thread.finished.connect(self.threadClient.deleteLater)
-        # self.thread.finished.connect(self.serverStarted)
         self.workerClient.progress.connect(self.log_output_client)
-        # self.workerClient.progressng.connect(self.log_output_server)
         self.threadClient.start()
-
-        # self.threadClient.finished.connect(
-        #     lambda: self.serverStarted(True)
-        # )
 
     def startServer(self, prg, prgng):
         shost = txtHost.text()
@@ -300,19 +347,6 @@ class reMacQtApp(QMainWindow):
         sRet += f'| Host-IP and Host-Port as parameter.\n'
         sRet += f'| I.e. python reMac_server.py 127.0.0.1 1234. This will start the server\n'
         sRet += f'| on localhost listening at port 1234 for connections.\n'
-        # sRet += f'| The reMac suite is a remote access and administration tool for macOS.\n'
-        # sRet += f'| \n'
-        # sRet += f'| The suite consists of a server and a client part. You can use the\n'
-        # sRet += f'| scripts from within the terminal or start the GUI script and\n'
-        # sRet += f'| use the QT5 app to control server and client.\n'
-        # sRet += f'| \n'
-        # sRet += f'| This piece of software was built with the help of python and has a\n'
-        # sRet += f'| modular structure. This means that all the features you can use are\n'
-        # sRet += f'| embedded into their own and separate module. This setup not only makes\n'
-        # sRet += f'| it easier to get an overview of the functions and sources but also\n'
-        # sRet += f'| let''s you build and plugin new features easily by creating a new\n'
-        # sRet += f'| module by copying i.e. the hello world module and starting to add\n'
-        # sRet += f'| your own functionalities.\n'
         sRet += f'| \n'
         sRet += f'| Website:\n'
         sRet += f'| - https://github.com/jetedonner/ch.kimhauser.python.remacQt5\n'
