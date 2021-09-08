@@ -423,7 +423,7 @@ class reMacQtApp(QMainWindow):
             self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
 
     def keyUpPressed(self):
-        if (self.sentCmdListCursor) > 0:
+        if self.sentCmdListCursor > 0:
             self.sentCmdListCursor -= 1
             self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
 
