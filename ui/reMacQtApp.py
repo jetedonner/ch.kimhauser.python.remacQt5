@@ -55,9 +55,12 @@ class reMacQtApp(QMainWindow):
         window = QWidget()
         wdgtServer = QWidget()
         layoutServer = QVBoxLayout()
+        layoutServer.setSpacing(0)
         wdgtClient = QWidget()
         layoutClient = QVBoxLayout()
+        layoutClient.setSpacing(0)
         layoutModuleCommand = QVBoxLayout()
+        layoutModuleCommand.setSpacing(0)
 
         wdgtLaunchDeamon = QWidget()
         layoutLaunchDeamon = QVBoxLayout()
@@ -77,14 +80,18 @@ class reMacQtApp(QMainWindow):
         wdgtIP.setLayout(layIP)
         layIP.addWidget(QLabel('IP address:'))
         layIP.addWidget(txtHost)
+        layIP.setSpacing(0)
         layConn.addWidget(wdgtIP)
         layPort = QVBoxLayout()
         wdgtPort = QWidget()
         wdgtPort.setLayout(layPort)
         layPort.addWidget(QLabel('Port:'))
         layPort.addWidget(txtPort)
+        layPort.setSpacing(0)
         layConn.addWidget(wdgtPort)
+        layConn.setSpacing(0)
         layout.addWidget(wdgtConn)
+        layout.setSpacing(0)
 
         self.cmd_start_server.clicked.connect(self.runStartServer)
         layoutServer.addWidget(self.cmd_start_server)
@@ -171,7 +178,7 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.setFontFamily("Courier")
         txtOutputClient.setFontPointSize(14)
         txtOutputClient.setReadOnly(True)
-        txtOutputClient.setFixedHeight(250)
+        txtOutputClient.setFixedHeight(160)
         layoutClient.addWidget(txtOutputClient)
         wdgtClient.setLayout(layoutClient)
         idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('res/images/hosting.png'), "Client")
@@ -191,7 +198,11 @@ class reMacQtApp(QMainWindow):
         layoutLaunchCtrlOutputLine.addWidget(cmd_clear_launchdeamon_output)
 
         wdgtLaunchCtrlOutputLine = QWidget()
+        wdgtLaunchCtrlOutputLine.setContentsMargins(0, 0, 0, 0)
         wdgtLaunchCtrlOutputLine.setLayout(layoutLaunchCtrlOutputLine)
+        layoutLaunchCtrlOutputLine.setContentsMargins(0, 0, 0, 0)
+        layoutLaunchCtrlOutputLine.setSpacing(0)
+        # layoutLaunchCtrlOutputLine.setMargin(0)
         cmd_create_launch_deamon = QPushButton('Create Launch deamon')
         cmd_create_launch_deamon.clicked.connect(self.create_launch_deamon)
 
@@ -199,12 +210,21 @@ class reMacQtApp(QMainWindow):
         layoutLaunchCtrlLdKey.addWidget(QLabel("Launch deamon key:"))
         layoutLaunchCtrlLdKey.addWidget(txtLdKey)
         wdgtLaunchCtrlLdKey = QWidget()
+        wdgtLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
+        layoutLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
+        layoutLaunchCtrlLdKey.setSpacing(0)
+        # layoutLaunchCtrlLdKey.setMargin(0)
         wdgtLaunchCtrlLdKey.setLayout(layoutLaunchCtrlLdKey)
 
         layoutLaunchCtrlLdProgram = QHBoxLayout()
         layoutLaunchCtrlLdProgram.addWidget(QLabel("Launch deamon program:"))
         layoutLaunchCtrlLdProgram.addWidget(txtLdProgram)
+
         wdgtLaunchCtrlLdProgramm = QWidget()
+        wdgtLaunchCtrlLdProgramm.setContentsMargins(0, 0, 0, 0)
+        layoutLaunchCtrlLdProgram.setContentsMargins(0, 0, 0, 0)
+        layoutLaunchCtrlLdProgram.setSpacing(0)
+        # layoutLaunchCtrlLdProgram.setMargin(0)
         wdgtLaunchCtrlLdProgramm.setLayout(layoutLaunchCtrlLdProgram)
 
         layoutLaunchDeamon.addWidget(wdgtLaunchCtrlLdKey)
@@ -244,7 +264,7 @@ class reMacQtApp(QMainWindow):
 
     global STATUSBAR_MSG_MSECS
     STATUSBAR_MSG_MSECS = 3000
-    sentCmdListCursor = -1
+
     hlpWin = help_dialog()
     prefWin = pref_dialog()
 
@@ -265,16 +285,6 @@ class reMacQtApp(QMainWindow):
         # help_file = open(f'help.html', 'rb')
         # help_txt = help_file.read()
         self.hlpWin.initUI()
-
-    def keyDownPressed(self):
-        if self.sentCmdListCursor < -1:
-            self.sentCmdListCursor += 1
-            self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
-
-    def keyUpPressed(self):
-        if (self.sentCmdListCursor) * -1 <= len(self.sentCommands):
-            self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
-            self.sentCmdListCursor -= 1
 
     def serverStarted(self, ok):
         conHost = "192.168.0.49"
@@ -392,7 +402,7 @@ class reMacQtApp(QMainWindow):
         self.stsBar.showMessage("Sending command ... ", STATUSBAR_MSG_MSECS)
         self.sentCommands.append(cmd2Send)
         self.txtCmdToSend.setText("")
-        self.recalledCommand = -1
+        self.sentCmdListCursor = len(self.sentCommands)
 
         shost = txtHost.text()
         sport = txtPort.text()
@@ -404,6 +414,28 @@ class reMacQtApp(QMainWindow):
         else:
             # self.clientPrg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
             self.myreMac_client.start_client(shost, sport, self.clientPrg, cmd2Send)
+
+    sentCmdListCursor = 0
+
+    def keyDownPressed(self):
+        if self.sentCmdListCursor < len(self.sentCommands) - 1:
+            self.sentCmdListCursor += 1
+            self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
+
+    def keyUpPressed(self):
+        if (self.sentCmdListCursor) > 0:
+            self.sentCmdListCursor -= 1
+            self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
+
+    # def keyDownPressed(self):
+    #     if self.sentCmdListCursor < -1:
+    #         self.sentCmdListCursor += 1
+    #         self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
+    #
+    # def keyUpPressed(self):
+    #     if (self.sentCmdListCursor) * -1 <= len(self.sentCommands):
+    #         self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
+    #         self.sentCmdListCursor -= 1
 
     def clear_output_server(self):
         txtOutputServer.setText("")
@@ -422,3 +454,5 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
         if set_status_bar:
             self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
+        else:
+            self.stsBar.showMessage("Server answer returned ...", STATUSBAR_MSG_MSECS)
