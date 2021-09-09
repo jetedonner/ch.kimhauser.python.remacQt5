@@ -29,7 +29,7 @@ class mod_download(mod_interfaceRunCmd):
                                      "specify a remote file/folder and can optionally specify a\n"
                                      "path / filename on the client's local filesystem where to\n"
                                      "save the downloaded content with the '-f' param."),
-            'cmd': 'dl <remote filename/path> [-f <local filename/path>]',
+            'cmd': f'{self.getCmdVariants4Help()} <remote filename/path> [-f <local filename/path>]',
             'ext': self.pritify4log(
                    '-f\tSpecify file-path / -name for saving the retrieved file/folder.\n\n'
                    f'Default save location is /tmp (app-dir) and the downloaded content will\n'

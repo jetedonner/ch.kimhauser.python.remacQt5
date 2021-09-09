@@ -36,7 +36,7 @@ class mod_clipboard(mod_interface):
             'desc': self.pritify4log("The 'Clipboard' module accesses the clipboard of the \n"
                                      "server and returns it's content. You can also inject\n"
                                      "a string into the servers clipboard with param '-i'"),
-            'cmd': 'cb [-r | -i "<string to inject>"]',
+            'cmd': f'{self.getCmdVariants4Help()} [-r | -i "<string to inject>"]',
             'ext': self.pritify4log(
                    '-r\tRead the servers clipboard - the default (like no param)\n'
                    '-i\tInject a string into server clipboard (also empty string "")')

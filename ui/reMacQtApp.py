@@ -183,7 +183,7 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.setFontFamily("Courier")
         txtOutputClient.setFontPointSize(14)
         txtOutputClient.setReadOnly(True)
-        txtOutputClient.setFixedHeight(160)
+        txtOutputClient.setFixedHeight(200)
         layoutClient.addWidget(txtOutputClient)
         wdgtClient.setLayout(layoutClient)
         idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('res/images/hosting.png'), "Client")
@@ -212,7 +212,7 @@ class reMacQtApp(QMainWindow):
         cmd_create_launch_deamon.clicked.connect(self.create_launch_deamon)
 
         layoutLaunchCtrlLdKey = QHBoxLayout()
-        layoutLaunchCtrlLdKey.addWidget(QLabel("Key:"))
+        layoutLaunchCtrlLdKey.addWidget(QLabel("Key: "))
         layoutLaunchCtrlLdKey.addWidget(txtLdKey)
         wdgtLaunchCtrlLdKey = QWidget()
         wdgtLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
@@ -222,7 +222,7 @@ class reMacQtApp(QMainWindow):
         wdgtLaunchCtrlLdKey.setLayout(layoutLaunchCtrlLdKey)
 
         layoutLaunchCtrlLdProgram = QHBoxLayout()
-        layoutLaunchCtrlLdProgram.addWidget(QLabel("Program:"))
+        layoutLaunchCtrlLdProgram.addWidget(QLabel("Program: "))
         layoutLaunchCtrlLdProgram.addWidget(txtLdProgram)
 
         wdgtLaunchCtrlLdProgramm = QWidget()
@@ -262,7 +262,7 @@ class reMacQtApp(QMainWindow):
 
         self.setCentralWidget(window)
         self.stsBar = self.statusBar()
-        self.setWindowTitle("reMac v0.0.1 - Qt5-App")
+        self.setWindowTitle(f"{config.REMAC_APP_NAME} v.{config.REMAC_APP_VER} - {config.REMAC_APP_DESC_SHORT}")
         self.show()
         app.exec_()
         # self.stsBar.showMessage("reMac v0.0.1 suite started ...", STATUSBAR_MSG_MSECS)

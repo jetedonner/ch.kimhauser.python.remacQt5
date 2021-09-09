@@ -58,7 +58,7 @@ class mod_webcam(mod_interfaceRunCmd):
                                      "client as well as opens it in the default image preview app on\n"
                                      "the client. You can also specify a alternative filename with\n"
                                      "the '-f <filename>' param to override the default save location."),
-            'cmd': 'wc [-f <local filename / -path>]',
+            'cmd': f'{self.getCmdVariants4Help()} [-f <local filename / -path>]',
             'ext': self.pritify4log(
                    '-f\tSpecify file-path / -name for saving the retrieved image.\n\n'
                    f'Default save location is {OUTPUT_PATH} (app-dir) and the image filename\n'

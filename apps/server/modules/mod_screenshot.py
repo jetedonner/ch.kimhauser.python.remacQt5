@@ -43,7 +43,7 @@ class mod_screenshot(mod_interfaceRunCmd):
                                      "saves it in the '/tmp' folder as well as opens it in the default\n"
                                      "image preview app on the client. You can also specify a filename with\n"
                                      "the '-f <filename>' param to override the default save location."),
-            'cmd': 'sc [-f <local filename / -path>]',
+            'cmd': f'{self.getCmdVariants4Help()} [-f <local filename / -path>]',
             'ext': self.pritify4log(
                    '-f\tSpecify file-path / -name for saving the retrieved image.\n\n'
                    f'Default save location is {OUTPUT_PATH} (app-dir) and the image filename\n'

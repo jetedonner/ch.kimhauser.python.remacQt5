@@ -23,14 +23,14 @@ class mod_modHelp(mod_interface):
                                      "This is a description, the calling convention as well as\n"
                                      "extra information if there is any. You can also only show\n"
                                      "the calling information with the '-c' argument"),
-            'cmd': 'mh [<module_name> [-c]]',
+            'cmd': f'{self.getCmdVariants4Help()} [<module_name> [-c]]',
             'ext': self.pritify4log(
-                '-c\tOnly the calling information for <module_name>'
+                '-c\tOnly the command calling information and details for <module_name>'
             )
         }
         return help_txt
 
-    def print_client_help(self, appName, reMacModules, module = None):
+    def print_client_help(self, appName, reMacModules, module=None):
         args = module.split()
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)
@@ -45,11 +45,11 @@ class mod_modHelp(mod_interface):
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
         elif len(args) >= 1:
-            sRet += f'| Command help for module "{args[0]}":\n'
-            sRet += f'| \n'
             moduleFound = False
             for mod in reMacModules:
-                if mod.cmd_short == args[0]:
+                if mod.cmd_short == args[0] or mod.cmd_long == args[0]:
+                    sRet += f'| Help for module "{mod.cmd_short}" / "{mod.cmd_long}":\n'
+                    sRet += f'| \n'
                     altCmd = mod.cmd_long
                     # sRet += f'| -{keyTmp} / {altCmd[1]}: {altCmd[2]}\n'
                     help_dict = mod.mod_helptxt()

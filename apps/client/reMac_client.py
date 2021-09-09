@@ -12,47 +12,27 @@ conPort = "6890"
 sel = selectors.DefaultSelector()
 
 
-class reMac_client():
+class reMac_client:
 
     my_client_lib = None
-
     prg = None
+    DEFAULT_ACTION = "mh"
 
     def __init__(self):
         self.setup_client()
 
     def setup_client(self):
         print(f'Client setup successfully!')
-        pass
 
     def getModule4Cmd(self, cmd):
         for md in reMac_libclient.reMacModules:
             if md.cmd_short.startswith(cmd) or md.cmd_long.startswith(cmd):
                 return md
-        #
-        # for mod in self.my_client_lib.reMacModules:
-        #     # print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
-        #     if mod.cmd_short.startswith(cmd) or mod.cmd_long.startswith(cmd):
-        #         return mod
         return None
 
     def create_request(self, action, value):
         mod = self.getModule4Cmd(action)
         if mod is not None:
-
-        # if action == "hw" \
-        #         or action == "cb" \
-        #         or action == "vd" \
-        #         or action == "ch" \
-        #         or action == "cl" \
-        #         or action == "sc" \
-        #         or action == "wc" \
-        #         or action == "rm" \
-        #         or action == "in" \
-        #         or action == "sh" \
-        #         or action == "dl" \
-        #         or action == "hp" \
-        #         or action.startswith("mh"):
             return dict(
                 type="text/json",
                 encoding="utf-8",
@@ -79,6 +59,7 @@ class reMac_client():
             )
 
     def start_connection(self, host, port, request):
+        retVal = False
         addr = (host, port)
         print("reMac Client - Starting connection to:", addr)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -91,22 +72,21 @@ class reMac_client():
             message = reMac_libclient(sel, sock, addr, request, self.prg)
             self.my_client_lib = message
             sel.register(sock, events, data=message)
-            return True
+            retVal = True
         except socket.error as exc:
             print(f"Caught exception socket.error: {exc}")
-            return False
-        return False
+        return retVal
 
-    def send2_client(self, msg="mh", valz="", myHost=conHost, myPort=conPort):
+    def send2_client(self, msg=DEFAULT_ACTION, valz="", myHost=conHost, myPort=conPort):
         self.start_client(myHost, myPort, msg, valz)
 
-    def start_client(self, myHost=conHost, myPort=conPort, prg=None, msg="mh", valz=""):
+    def start_client(self, myHost=conHost, myPort=conPort, prg=None, msg=DEFAULT_ACTION, valz=""):
         self.prg = prg
         try:
             host, port = myHost, int(myPort)
             action, value = msg, valz
             if action == "":
-                action = "mh"
+                action = self.DEFAULT_ACTION
             args = action.split(" ", 1)
             if len(args) >= 2:
                 value = args[1]

@@ -44,7 +44,7 @@ class mod_info(mod_interfaceRunCmd):
             'desc': self.pritify4log("The 'Info' module returns information about\n"
                                      "the server system like macOS version, pc model,\n"
                                      "wifi info or the battery condition."),
-            'cmd': 'in [-a | -v | -m | -w | -wl | -ws | -b]',
+            'cmd': f'{self.getCmdVariants4Help()} [-a | -v | -m | -w | -wl | -ws | -b]',
             'ext': self.pritify4log(
                    '-a\tAll available information - the default (like no param)\n'
                    '-v\tOnly macOS version\n'

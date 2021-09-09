@@ -19,7 +19,7 @@ class mod_hello(mod_interface):
             'desc': self.pritify4log("The 'Hello World' module just returns a string from\n"
                                      "the server to the client and acts as test function\n"
                                      "call to check the connection."),
-            'cmd': 'hw',
+            'cmd': f'{self.getCmdVariants4Help()}',
             'ext': 'This command has no arguments'
         }
         return help_txt

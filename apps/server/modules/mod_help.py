@@ -50,7 +50,7 @@ class mod_help(mod_interface):
             'desc': self.pritify4log("The 'Help' module returns a string with the\n"
                                      "help information about the reMac-App. You will\n"
                                      "find the available commands and functions."),
-            'cmd': 'hp',
+            'cmd': f'{self.getCmdVariants4Help()}',
             'ext': 'This command has no arguments'
         }
         return help_txt

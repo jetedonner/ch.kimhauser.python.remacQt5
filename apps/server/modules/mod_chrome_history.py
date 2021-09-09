@@ -32,7 +32,7 @@ class mod_chrome_history(mod_interface):
                                      "the server's chrome history DB. It makes a copy of the current\n"
                                      "DB and then reads the 'URL' entries which are returned as JSON\n"
                                      "to the client."),
-            'cmd': 'ch [-c [<db_filename>]]',
+            'cmd': f'{self.getCmdVariants4Help()} [-c [<db_filename>]]',
             'ext': self.pritify4log(
                    "-c\tDownload the chrome history DB to client. Optional: <db_filename>\n\n"
                    "Per default the module returns all 'URL' entries of the chrome\n"

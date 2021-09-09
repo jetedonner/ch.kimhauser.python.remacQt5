@@ -37,7 +37,7 @@ class mod_upload(mod_interfaceRunCmd):
                                      "save the uploaded content with the '-f' param.\n"
                                      "IMPORTANT: You / the app will have write permission on this\n"
                                      "location to save the file remotely."),
-            'cmd': 'ul <local filename/path> [-f <remote filename/path>]',
+            'cmd': f'{self.getCmdVariants4Help()} <local filename/path> [-f <remote filename/path>]',
             'ext': self.pritify4log(
                    '-f\tSpecify file-path / -name for saving the uploaded file/folder.\n\n'
                    f'Default save location is /tmp (app-dir) and the uploaded content will\n'

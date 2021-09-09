@@ -1,4 +1,5 @@
 REMAC_APP_NAME = "reMac Suite"
+REMAC_APP_DESC_SHORT = "Qt5 / Python App"
 REMAC_APP_DESC = "Remote access and administration tool for macOS"
 REMAC_APP_VER = "0.0.1"
 REMAC_APP_DATE = "2021-09-04"

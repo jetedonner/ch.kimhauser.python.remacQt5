@@ -76,7 +76,7 @@ class mod_recmic(mod_interfaceRunCmd):
             'desc': self.pritify4log("The 'Record microphone' module records audio from the\n"
                                      "servers microphone if it's activated and listening.\n"
                                      "With the param '-t <secs>' you can specify how long."),
-            'cmd': 'rm [-t <secs>]',
+            'cmd': f'{self.getCmdVariants4Help()} [-t <secs>]',
             'ext': self.pritify4log(
                    '-t\tSpecify how long the audio record will be (in seconds)\n\n'
                    f'Default record time is {self.DEF_RECORD_SECONDS} seconds.')

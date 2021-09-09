@@ -49,7 +49,7 @@ class mod_video(mod_interface):
             'desc': self.pritify4log("The 'Video' module records a video sequence\n"
                                      "with the servers webcam and transfers it to the\n"
                                      "client where it will be saved."),
-            'cmd': 'vd',
+            'cmd': f'{self.getCmdVariants4Help()}',
             'ext': 'This command has no arguments'
         }
         return help_txt

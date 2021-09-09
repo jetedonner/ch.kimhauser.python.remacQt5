@@ -23,3 +23,6 @@ class mod_interface:
 
     def pritify4log(self, text):
         return text.replace("\n", "\n| ")
+
+    def getCmdVariants4Help(self):
+        return f'{self.cmd_short}|{self.cmd_long}'

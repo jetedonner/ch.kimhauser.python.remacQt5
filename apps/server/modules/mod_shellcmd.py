@@ -83,7 +83,7 @@ class mod_shellcmd(mod_interface):
                                      "shell session and continue to execute commands until\n"
                                      "you send the exit command which terminates the session\n¨"
                                      "and the module."),
-            'cmd': 'sh [<shell command>]',
+            'cmd': f'{self.getCmdVariants4Help()} [<shell command>]',
             'ext': self.pritify4log(
                    'Per default the module opens a persistent shell session and\n'
                    'keeps the connection open. If you specify an argument to\n'
