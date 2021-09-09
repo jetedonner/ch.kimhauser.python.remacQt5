@@ -11,7 +11,7 @@ class mod_help(mod_interface):
     def setup_mod(self):
         print(f'Module Setup (mod_help) called successfully!')
 
-    def run_mod(self, cmd=""):
+    def run_mod(self, cmd="", param=""):
         print(f'Help Module')
         hostname = socket.gethostname()
         local_ip = socket.gethostbyname(hostname)

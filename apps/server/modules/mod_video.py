@@ -12,7 +12,7 @@ class mod_video(mod_interface):
     def setup_mod(self):
         print(f'Module Setup (mod_video) called successfully!')
 
-    def run_mod(self, cmd=""):
+    def run_mod(self, cmd="", param=""):
         print(f'Video Module')
 
         cap = cv2.VideoCapture(0)  # Capture video from camera

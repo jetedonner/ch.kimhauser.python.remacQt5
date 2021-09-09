@@ -11,7 +11,7 @@ class mod_modHelp(mod_interface):
     def setup_mod(self):
         print(f'Module Setup (mod_modHelp) called successfully!')
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd="", param=""):
         print(f'Module Help')
         return f'mod_modHelp module called!'
 

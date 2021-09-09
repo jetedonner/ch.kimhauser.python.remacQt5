@@ -10,7 +10,7 @@ class mod_interface:
     def setup_mod(self):
         pass
 
-    def run_mod(self, cmd = ""):
+    def run_mod(self, cmd="", param=""):
         pass
 
     def mod_helptxt(self):

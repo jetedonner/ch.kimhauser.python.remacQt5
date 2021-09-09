@@ -432,16 +432,6 @@ class reMacQtApp(QMainWindow):
             self.sentCmdListCursor -= 1
             self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
 
-    # def keyDownPressed(self):
-    #     if self.sentCmdListCursor < -1:
-    #         self.sentCmdListCursor += 1
-    #         self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
-    #
-    # def keyUpPressed(self):
-    #     if (self.sentCmdListCursor) * -1 <= len(self.sentCommands):
-    #         self.txtCmdToSend.setText(self.sentCommands[self.sentCmdListCursor])
-    #         self.sentCmdListCursor -= 1
-
     def clear_output_server(self):
         txtOutputServer.setText("")
 

@@ -1,5 +1,9 @@
 import platform
+import os
 import socket
+import fcntl
+import struct
+
 from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 
 
@@ -13,11 +17,13 @@ class mod_info(mod_interfaceRunCmd):
         print(f'Module Setup (mod_info) called successfully!')
 
     def run_mod(self, cmd="", param=""):
-        # print(f'Info Module')
-        hostname = socket.gethostname()
-        local_ip = socket.gethostbyname(hostname)
+        # hostname = socket.gethostname()
+        # local_ip = socket.gethostbyname(hostname)
+        # self.get_hostName()
         sRet = f'#========================================================================#\n'
-        sRet += f'| Info for server - IP: {local_ip}\n'
+        sRet += f'| Info for server - IP: {self.get_hostIP()}\n'
+        if param == "" or param == "-m" or param == "-a":
+            sRet += f"| Host: " + socket.gethostname() + "\n"
         if param == "" or param == "-m" or param == "-a":
             sRet += f"| System: " + self.get_model()
         if param == "" or param == "-v" or param == "-a":
@@ -28,7 +34,8 @@ class mod_info(mod_interfaceRunCmd):
             sRet += f"| WiFi: \n" + self.get_wifi(False)
         if param == "" or param == "-b" or param == "-a":
             sRet += ("|" if param == "-b" else  "") + f" Battery: " + self.get_battery()
-        sRet = sRet[:-1]
+        if param != "-v" and param != "-m":
+            sRet = sRet[:-1]
         sRet += f'#========================================================================#\n'
         return sRet
 
@@ -47,6 +54,18 @@ class mod_info(mod_interfaceRunCmd):
                    '-b\tInformation about the battery')
         }
         return help_txt
+
+    def get_hostIP(self):
+        myIP = "127.0.0.1"
+        addrInfo = socket.getaddrinfo(socket.gethostname(), None, family=socket.AF_INET, proto=socket.IPPROTO_TCP)
+        addrInfoNG = addrInfo
+
+        for hn in addrInfo:
+            if hn[4][0] != myIP:
+                myIP = hn[4][0]
+                break
+
+        return myIP
 
     def get_macVer(self):
         return str(platform.mac_ver()[0])

@@ -25,20 +25,34 @@ class reMac_client():
         print(f'Client setup successfully!')
         pass
 
+    def getModule4Cmd(self, cmd):
+        for md in reMac_libclient.reMacModules:
+            if md.cmd_short.startswith(cmd) or md.cmd_long.startswith(cmd):
+                return md
+        #
+        # for mod in self.my_client_lib.reMacModules:
+        #     # print(f'{mod.cmd_short}, {mod.cmd_long}, {mod.cmd_desc}')
+        #     if mod.cmd_short.startswith(cmd) or mod.cmd_long.startswith(cmd):
+        #         return mod
+        return None
+
     def create_request(self, action, value):
-        if action == "hw" \
-                or action == "cb" \
-                or action == "vd" \
-                or action == "ch" \
-                or action == "cl" \
-                or action == "sc" \
-                or action == "wc" \
-                or action == "rm" \
-                or action == "in" \
-                or action == "sh" \
-                or action == "dl" \
-                or action == "hp" \
-                or action.startswith("mh"):
+        mod = self.getModule4Cmd(action)
+        if mod is not None:
+
+        # if action == "hw" \
+        #         or action == "cb" \
+        #         or action == "vd" \
+        #         or action == "ch" \
+        #         or action == "cl" \
+        #         or action == "sc" \
+        #         or action == "wc" \
+        #         or action == "rm" \
+        #         or action == "in" \
+        #         or action == "sh" \
+        #         or action == "dl" \
+        #         or action == "hp" \
+        #         or action.startswith("mh"):
             return dict(
                 type="text/json",
                 encoding="utf-8",
@@ -91,6 +105,8 @@ class reMac_client():
         try:
             host, port = myHost, int(myPort)
             action, value = msg, valz
+            if action == "":
+                action = "mh"
             args = action.split(" ", 1)
             if len(args) >= 2:
                 value = args[1]
