@@ -9,6 +9,7 @@ class pref_dialog(QDialog):
 
     txtTimeout = LineEdit()
     chkKeepAlive = QCheckBox("Keep connection alive")
+    chkAddTimestamp = QCheckBox("Add timestamp to result")
     chkOpenImagePreview = QCheckBox("Open images preview")
 
     settings = QSettings("kimhauser.ch", "reMacQt5")
@@ -23,6 +24,9 @@ class pref_dialog(QDialog):
 
         layoutMain.addWidget(self.chkKeepAlive)
         self.chkKeepAlive.setChecked(bool(self.settings.value("keepalive", False, bool)))
+
+        layoutMain.addWidget(self.chkAddTimestamp)
+        self.chkAddTimestamp.setChecked(bool(self.settings.value("addTimestamp", True, bool)))
 
         layoutMain.addWidget(QLabel("Timeout:"))
         self.txtTimeout.setPlaceholderText("Timeout (sec)")
@@ -62,5 +66,6 @@ class pref_dialog(QDialog):
     def closeDialog(self):
         self.settings.setValue("timeout", self.txtTimeout.text())
         self.settings.setValue("keepalive", bool(self.chkKeepAlive.isChecked()))
+        self.settings.setValue("addTimestamp", bool(self.chkAddTimestamp.isChecked()))
         self.settings.setValue("openimagepreview", bool(self.chkOpenImagePreview.isChecked()))
         self.close()

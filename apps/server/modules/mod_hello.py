@@ -1,3 +1,4 @@
+from datetime import datetime
 from apps.server.modules.libs.mod_interface import mod_interface
 
 
@@ -12,7 +13,8 @@ class mod_hello(mod_interface):
 
     def run_mod(self, cmd="", param=""):
         print(f'Hello Module')
-        return f'HelloWorld module called!'
+        now = datetime.now()
+        return f'HelloWorld module called @ {now.strftime("%m/%d/%Y, %H:%M:%S")}!'
 
     def mod_helptxt(self):
         help_txt = {

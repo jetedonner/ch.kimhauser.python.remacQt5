@@ -1,7 +1,6 @@
-import os
 import sys
 import socket
-import xml.dom.minidom
+from datetime import datetime
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
     QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
@@ -412,7 +411,7 @@ class reMacQtApp(QMainWindow):
         shost = txtHost.text()
         sport = txtPort.text()
 
-        self.log_output_client(f'Sending command "{cmd2Send}" to: {shost}:{sport} ...')
+        self.log_output_client(f'Sending command "{cmd2Send}" to: {shost}:{sport} ...', True, True)
         cmd2Send = cmd2Send.lower()
         if cmd2Send.startswith("sh"):
             self.runStartClient(cmd2Send)
@@ -435,8 +434,13 @@ class reMacQtApp(QMainWindow):
     def clear_output_server(self):
         txtOutputServer.setText("")
 
-    def log_output_server(self, msg, set_status_bar=False):
-        txtOutputServer.append(msg)
+    def log_output_server(self, msg, set_status_bar=False, addTimestamp=False):
+        msgLine = msg
+        if addTimestamp and settings.value("addTimestamp"):
+            now = datetime.now()  # current date and time
+            msgLine = f'{now.strftime("%H:%M:%S")}: {msgLine}'
+
+        txtOutputServer.append(msgLine)
         txtOutputServer.verticalScrollBar().setValue(txtOutputServer.verticalScrollBar().maximum())
         if set_status_bar:
             self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
@@ -444,8 +448,13 @@ class reMacQtApp(QMainWindow):
     def clear_output_client(self):
         txtOutputClient.setText("")
 
-    def log_output_client(self, msg, set_status_bar=False):
-        txtOutputClient.append(msg)
+    def log_output_client(self, msg, set_status_bar=False, addTimestamp=False):
+        msgLine = msg
+        if addTimestamp and settings.value("addTimestamp"):
+            now = datetime.now()  # current date and time
+            msgLine = f'{now.strftime("%H:%M:%S")}: {msgLine}'
+
+        txtOutputClient.append(msgLine)
         txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
         if set_status_bar:
             self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
