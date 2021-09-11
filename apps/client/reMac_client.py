@@ -90,9 +90,9 @@ class reMac_client:
             args = action.split(" ", 1)
             if len(args) >= 2:
                 value = args[1]
-            request = self.create_request(args[0], value)
+            request = self.create_request(args[0].lower(), value)
             connResult = self.start_connection(host, port, request)
-            prg.emit(f"Connection to reMac Server ({conHost}:{conPort}) successfully established!")
+            # prg.emit(f"Connection to reMac Server ({conHost}:{conPort}) successfully established!")
             try:
                 while True:
                     events = sel.select(timeout=1)

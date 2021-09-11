@@ -1,11 +1,14 @@
 import sys
 import socket
 from datetime import datetime
+# Importing the Timer subclass from the threading Class
+from threading import Timer
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
     QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
 from PyQt5.QtCore import QThread, QSettings, QFile, QTextStream
 from PyQt5 import QtGui, QtCore
+from PyQt5.QtGui import QMovie
 
 from ui.libs.LineEdit import LineEdit
 from apps.server.reMac_server import reMac_server
@@ -15,6 +18,7 @@ from ui.libs.StartClientWorker import StartClientWorker
 from ui.help_dialog import help_dialog
 from ui.pref_dialog import pref_dialog
 from apps.libs.reMac_createDeamon import reMac_createDeamon
+from ui.libs.runCommand import runCommand
 
 import config
 
@@ -42,6 +46,13 @@ class reMacQtApp(QMainWindow):
     cmb_modules = QComboBox()
     txtCmdToSend = LineEdit()
     stsBar = None
+
+    lblLoader = QLabel()
+    lblSts = QLabel()
+    if runCommand().run_command("defaults read -g AppleInterfaceStyle").strip() == "Dark":
+        mvLoader = QMovie("./res/images/ajax-loader.gif")
+    else:
+        mvLoader = QMovie("./res/images/ajax-loader-light.gif")
 
     def __init__(self):
         super().__init__()
@@ -113,6 +124,7 @@ class reMacQtApp(QMainWindow):
         self.cmb_modules.addItem("Chrome history", "ch")
         self.cmb_modules.addItem("Chrome logins", "cl")
         self.cmb_modules.addItem("System information", "in")
+        self.cmb_modules.addItem("System profiler", "sp")
         self.cmb_modules.addItem("Download file", "dl")
         self.cmb_modules.addItem("Upload file", "ul")
 
@@ -261,13 +273,28 @@ class reMacQtApp(QMainWindow):
 
         self.setCentralWidget(window)
         self.stsBar = self.statusBar()
+
+        self.lblLoader.setMovie(self.mvLoader)
+        self.lblLoader.show()
+        self.lblLoader.setVisible(False)
+        # self.mvLoader.start()
+        self.stsBar.addWidget(self.lblLoader)
+        self.stsBar.addWidget(self.lblSts)
+        # QLabel * lbl = new
+        # QLabel;
+        # QMovie * movie = new
+        # QMovie("G:/loader.gif");
+        # lbl->setMovie(movie);
+        # lbl->show();
+        # movie->start();
+
         self.setWindowTitle(f"{config.REMAC_APP_NAME} v.{config.REMAC_APP_VER} - {config.REMAC_APP_DESC_SHORT}")
         self.show()
         app.exec_()
         # self.stsBar.showMessage("reMac v0.0.1 suite started ...", STATUSBAR_MSG_MSECS)
 
     global STATUSBAR_MSG_MSECS
-    STATUSBAR_MSG_MSECS = 3000
+    STATUSBAR_MSG_MSECS = 3
 
     hlpWin = help_dialog()
     prefWin = pref_dialog()
@@ -386,7 +413,6 @@ class reMacQtApp(QMainWindow):
         shost = txtHost.text()
         sport = txtPort.text()
         prg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
-        # self.stsBar.showMessage(f"Starting reMacApp Client: {shost}:{sport} ...", STATUSBAR_MSG_MSECS)
         msg = ""
         params = ""
         if cmd != "":
@@ -395,15 +421,26 @@ class reMacQtApp(QMainWindow):
                 msg = args[0]
                 if len(args) >= 2:
                     params = args[1]
-
-
         self.myreMac_client.start_client(shost, sport, prg, msg, params)
+
+    def setStatusText(self, msg, showLoader=True , timeoutSecs=STATUSBAR_MSG_MSECS):
+        self.lblSts.setText(msg)
+        self.lblLoader.setVisible(showLoader)
+        self.mvLoader.start()
+        t = Timer(interval=timeoutSecs, function=self.hideStatusMessage)
+        t.start()
+
+    def hideStatusMessage(self):
+        self.lblSts.setText("")
+        self.lblLoader.setVisible(False)
+        self.mvLoader.stop()
 
     def sendCommand(self):
         cmd2Send = self.txtCmdToSend.text().strip()
         if cmd2Send == "":
             return
-        self.stsBar.showMessage("Sending command ... ", STATUSBAR_MSG_MSECS)
+        self.lblSts.setText("Sending command ... ")
+        # self.stsBar.showMessage("Sending command ... ", STATUSBAR_MSG_MSECS)
         self.sentCommands.append(cmd2Send)
         self.txtCmdToSend.setText("")
         self.sentCmdListCursor = len(self.sentCommands)
@@ -412,12 +449,12 @@ class reMacQtApp(QMainWindow):
         sport = txtPort.text()
 
         self.log_output_client(f'Sending command "{cmd2Send}" to: {shost}:{sport} ...', True, True)
-        cmd2Send = cmd2Send.lower()
-        if cmd2Send.startswith("sh"):
-            self.runStartClient(cmd2Send)
-        else:
-            # self.clientPrg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
-            self.myreMac_client.start_client(shost, sport, self.clientPrg, cmd2Send)
+        cmd2SendLower = cmd2Send.lower()
+        # if cmd2SendLower.startswith("sh"):
+        self.runStartClient(cmd2Send)
+        # else:
+        #     # self.clientPrg.emit(f"Starting reMacApp Client: {shost}:{sport} ...")
+        #     self.myreMac_client.start_client(shost, sport, self.clientPrg, cmd2Send)
 
     sentCmdListCursor = 0
 
@@ -443,7 +480,9 @@ class reMacQtApp(QMainWindow):
         txtOutputServer.append(msgLine)
         txtOutputServer.verticalScrollBar().setValue(txtOutputServer.verticalScrollBar().maximum())
         if set_status_bar:
-            self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
+            self.setStatusText(msg)
+            # self.lblSts.setText(msg)
+            # self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
 
     def clear_output_client(self):
         txtOutputClient.setText("")
@@ -457,6 +496,11 @@ class reMacQtApp(QMainWindow):
         txtOutputClient.append(msgLine)
         txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
         if set_status_bar:
-            self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
+            self.setStatusText(msg)
+            # self.lblSts.setText(msg)
+            # self.lblLoader.setVisible(False)
+            # self.stsBar.showMessage(msg, STATUSBAR_MSG_MSECS)
         else:
-            self.stsBar.showMessage("Server answer returned ...", STATUSBAR_MSG_MSECS)
+            self.setStatusText("Server answer returned ...")
+            # self.lblSts.setText("Server answer returned ...")
+            # self.stsBar.showMessage("Server answer returned ...", STATUSBAR_MSG_MSECS)

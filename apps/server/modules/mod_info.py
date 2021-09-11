@@ -13,6 +13,9 @@ class mod_info(mod_interfaceRunCmd):
     cmd_long = "info"
     cmd_desc = "Info module"
 
+    cmd_sw_vers = "sw_vers"
+    cmd_uname_long = "uname -a"
+
     def setup_mod(self):
         print(f'Module Setup (mod_info) called successfully!')
 
@@ -26,15 +29,27 @@ class mod_info(mod_interfaceRunCmd):
             sRet += f"| Host: " + socket.gethostname() + "\n"
         if param == "" or param == "-m" or param == "-a":
             sRet += f"| System: " + self.get_model()
+        if param == "" or param == "-p" or param == "-a":
+            sRet += f"| Platform: " + self.get_platform() + "\n"
         if param == "" or param == "-v" or param == "-a":
             sRet += f"| macOS version: " + self.get_macVer() + "\n"
+        if param == "" or param == "-vv" or param == "-a":
+            arrVers = self.get_vers()
+            strVers = arrVers.replace("\n", "\n| ")
+            sRet += f"| macOS v. ext.: \n| " + strVers + "\n"
+        if param == "" or param == "-u" or param == "-a":
+            sRet += f"| Current user: {self.get_user()}\n"
+        if param == "" or param == "-s" or param == "-a":
+            sRet += f"| {self.get_sip()}"
+            if param == "-s":
+                sRet += "\n"
         if param == "" or param == "-w" or param == "-wl" or param == "-a":
             sRet += f"| WiFi: \n" + self.get_wifi(True)
         if param == "-ws":
             sRet += f"| WiFi: \n" + self.get_wifi(False)
         if param == "" or param == "-b" or param == "-a":
             sRet += ("|" if param == "-b" else  "") + f" Battery: " + self.get_battery()
-        if param != "-v" and param != "-m":
+        if param != "-v" and param != "-m" and param != "-p" and param != "-u":
             sRet = sRet[:-1]
         sRet += f'#========================================================================#\n'
         return sRet
@@ -44,11 +59,14 @@ class mod_info(mod_interfaceRunCmd):
             'desc': self.pritify4log("The 'Info' module returns information about\n"
                                      "the server system like macOS version, pc model,\n"
                                      "wifi info or the battery condition."),
-            'cmd': f'{self.getCmdVariants4Help()} [-a | -v | -m | -w | -wl | -ws | -b]',
+            'cmd': f'{self.getCmdVariants4Help()} [-a|-m|-p|-v|-u|-s|-w|-wl|-ws|-b]',
             'ext': self.pritify4log(
                    '-a\tAll available information - the default (like no param)\n'
-                   '-v\tOnly macOS version\n'
                    '-m\tSystem model <sysctl -n hw.model>\n'
+                   '-p\tPlatform\n'
+                   '-v\tOnly macOS version\n'
+                   '-u\tOnly current username (and is root?)\n'
+                   '-s\tIs SIP enabled\n'
                    '-w|-wl\tAll Wifi-Info\n'
                    '-ws\tBasic Wifi-Info only\n'
                    '-b\tInformation about the battery')
@@ -69,6 +87,22 @@ class mod_info(mod_interfaceRunCmd):
 
     def get_macVer(self):
         return str(platform.mac_ver()[0])
+
+    def get_sip(self):
+        return self.run_command("csrutil status")
+
+    def get_vers(self):
+        return self.run_command(self.cmd_sw_vers).strip()
+
+    def get_platform(self):
+        return self.run_command(self.cmd_uname_long).strip()
+
+    def get_user(self):
+        current_user = self.run_command("whoami").strip()
+        isRoot = False
+        if current_user == "root":
+            isRoot = True
+        return f'{current_user} (isRoot: {isRoot})'
 
     def get_model(self):
         return self.run_command("sysctl -n hw.model")#.decode('utf-8')
