@@ -1,12 +1,11 @@
 import sys
 import socket
 from datetime import datetime
-# Importing the Timer subclass from the threading Class
 from threading import Timer
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
     QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
-from PyQt5.QtCore import QThread, QSettings, QFile, QTextStream
+from PyQt5.QtCore import QThread, QSettings
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QMovie
 
@@ -49,6 +48,7 @@ class reMacQtApp(QMainWindow):
 
     lblLoader = QLabel()
     lblSts = QLabel()
+
     if runCommand().run_command("defaults read -g AppleInterfaceStyle").strip() == "Dark":
         mvLoader = QMovie("./res/images/ajax-loader.gif")
     else:
@@ -74,7 +74,6 @@ class reMacQtApp(QMainWindow):
 
         wdgtLaunchDeamon = QWidget()
         layoutLaunchDeamon = QVBoxLayout()
-        # layoutModuleCommand = QVBoxLayout()
 
         layout = QVBoxLayout()
         self.setFixedWidth(725)
@@ -124,7 +123,7 @@ class reMacQtApp(QMainWindow):
         self.cmb_modules.addItem("Chrome history", "ch")
         self.cmb_modules.addItem("Chrome logins", "cl")
         self.cmb_modules.addItem("System information", "in")
-        self.cmb_modules.addItem("System profiler", "sp")
+        self.cmb_modules.addItem("System profiler (extended information)", "sp")
         self.cmb_modules.addItem("Download file", "dl")
         self.cmb_modules.addItem("Upload file", "ul")
 
@@ -176,7 +175,6 @@ class reMacQtApp(QMainWindow):
         wdgtServer.setLayout(layoutServer)
         tabWdgt.addTab(wdgtServer, QtGui.QIcon('res/images/server.png'), "Server")
 
-
         layoutClientOutputLine = QHBoxLayout()
         layoutClientOutputLine.addWidget(QLabel('Output:'))
         cmd_clear_client_output = QPushButton('')
@@ -199,10 +197,6 @@ class reMacQtApp(QMainWindow):
         wdgtClient.setLayout(layoutClient)
         idx = tabWdgt.addTab(wdgtClient, QtGui.QIcon('res/images/hosting.png'), "Client")
 
-        # layLaunchDeamon = QVBoxLayout()
-        # wdgtLaunchDeamon = QWidget()
-        # layLaunchDeamon.addWidget(wdgtLaunchDeamon)
-        #
         layoutLaunchCtrlOutputLine = QHBoxLayout()
         layoutLaunchCtrlOutputLine.addWidget(QLabel('Output:'))
 
@@ -210,7 +204,6 @@ class reMacQtApp(QMainWindow):
         cmd_clear_launchdeamon_output.setIcon(QtGui.QIcon('res/images/empty-set.png'))
         cmd_clear_launchdeamon_output.setIconSize(QtCore.QSize(16, 16))
         cmd_clear_launchdeamon_output.setFixedWidth(48)
-        # cmd_clear_launchdeamon_output.clicked.connect(self.clear_output_server)
         layoutLaunchCtrlOutputLine.addWidget(cmd_clear_launchdeamon_output)
 
         wdgtLaunchCtrlOutputLine = QWidget()
@@ -218,7 +211,6 @@ class reMacQtApp(QMainWindow):
         wdgtLaunchCtrlOutputLine.setLayout(layoutLaunchCtrlOutputLine)
         layoutLaunchCtrlOutputLine.setContentsMargins(0, 0, 0, 0)
         layoutLaunchCtrlOutputLine.setSpacing(0)
-        # layoutLaunchCtrlOutputLine.setMargin(0)
         cmd_create_launch_deamon = QPushButton('Create Launch deamon')
         cmd_create_launch_deamon.clicked.connect(self.create_launch_deamon)
 
@@ -229,7 +221,6 @@ class reMacQtApp(QMainWindow):
         wdgtLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
         layoutLaunchCtrlLdKey.setContentsMargins(0, 0, 0, 0)
         layoutLaunchCtrlLdKey.setSpacing(0)
-        # layoutLaunchCtrlLdKey.setMargin(0)
         wdgtLaunchCtrlLdKey.setLayout(layoutLaunchCtrlLdKey)
 
         layoutLaunchCtrlLdProgram = QHBoxLayout()
@@ -240,7 +231,6 @@ class reMacQtApp(QMainWindow):
         wdgtLaunchCtrlLdProgramm.setContentsMargins(0, 0, 0, 0)
         layoutLaunchCtrlLdProgram.setContentsMargins(0, 0, 0, 0)
         layoutLaunchCtrlLdProgram.setSpacing(0)
-        # layoutLaunchCtrlLdProgram.setMargin(0)
         wdgtLaunchCtrlLdProgramm.setLayout(layoutLaunchCtrlLdProgram)
 
         layoutLaunchDeamon.addWidget(wdgtLaunchCtrlLdKey)
@@ -251,7 +241,6 @@ class reMacQtApp(QMainWindow):
 
         wdgtLaunchDeamon.setLayout(layoutLaunchDeamon)
         idx = tabWdgt.addTab(wdgtLaunchDeamon, QtGui.QIcon('res/images/demon.png'), "Launch deamon")
-
 
         layout.addWidget(tabWdgt)
 
@@ -275,23 +264,14 @@ class reMacQtApp(QMainWindow):
         self.stsBar = self.statusBar()
 
         self.lblLoader.setMovie(self.mvLoader)
-        self.lblLoader.show()
+        # self.lblLoader.show()
         self.lblLoader.setVisible(False)
-        # self.mvLoader.start()
         self.stsBar.addWidget(self.lblLoader)
         self.stsBar.addWidget(self.lblSts)
-        # QLabel * lbl = new
-        # QLabel;
-        # QMovie * movie = new
-        # QMovie("G:/loader.gif");
-        # lbl->setMovie(movie);
-        # lbl->show();
-        # movie->start();
 
         self.setWindowTitle(f"{config.REMAC_APP_NAME} v.{config.REMAC_APP_VER} - {config.REMAC_APP_DESC_SHORT}")
         self.show()
         app.exec_()
-        # self.stsBar.showMessage("reMac v0.0.1 suite started ...", STATUSBAR_MSG_MSECS)
 
     global STATUSBAR_MSG_MSECS
     STATUSBAR_MSG_MSECS = 3
