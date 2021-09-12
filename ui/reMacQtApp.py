@@ -5,7 +5,7 @@ from threading import Timer
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
     QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
-from PyQt5.QtCore import QThread, QSettings
+from PyQt5.QtCore import QThread, QSettings, QTimer
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QMovie
 
@@ -48,6 +48,7 @@ class reMacQtApp(QMainWindow):
 
     lblLoader = QLabel()
     lblSts = QLabel()
+    timer = None
 
     if runCommand().run_command("defaults read -g AppleInterfaceStyle").strip() == "Dark":
         mvLoader = QMovie("./res/images/ajax-loader.gif")
@@ -126,6 +127,7 @@ class reMacQtApp(QMainWindow):
         self.cmb_modules.addItem("System profiler (extended information)", "sp")
         self.cmb_modules.addItem("Download file", "dl")
         self.cmb_modules.addItem("Upload file", "ul")
+        self.cmb_modules.addItem("Web download", "wl")
 
         self.cmb_modules.currentIndexChanged.connect(self.moduleCmbSel)
 
@@ -274,7 +276,7 @@ class reMacQtApp(QMainWindow):
         app.exec_()
 
     global STATUSBAR_MSG_MSECS
-    STATUSBAR_MSG_MSECS = 3
+    STATUSBAR_MSG_MSECS = 3000
 
     hlpWin = help_dialog()
     prefWin = pref_dialog()
@@ -403,14 +405,16 @@ class reMacQtApp(QMainWindow):
                     params = args[1]
         self.myreMac_client.start_client(shost, sport, prg, msg, params)
 
-    def setStatusText(self, msg, showLoader=True , timeoutSecs=STATUSBAR_MSG_MSECS):
+    def setStatusText(self, msg, showLoader=True , timeoutMSecs=STATUSBAR_MSG_MSECS):
         self.lblSts.setText(msg)
         self.lblLoader.setVisible(showLoader)
         self.mvLoader.start()
-        t = Timer(interval=timeoutSecs, function=self.hideStatusMessage)
-        t.start()
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.hideStatusMessage)
+        self.timer.start(timeoutMSecs)
 
     def hideStatusMessage(self):
+        self.timer.stop()
         self.lblSts.setText("")
         self.lblLoader.setVisible(False)
         self.mvLoader.stop()

@@ -1,5 +1,6 @@
 import time
 import subprocess
+import os
 
 
 from apps.server.modules.libs.mod_interface import mod_interface
@@ -54,9 +55,17 @@ class mod_shellcmd(mod_interface):
                     break
                 elif len(args) == 1 and param != "":
                     cmd2send = param
-                process = subprocess.Popen(cmd2send, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                my_env = os.environ.copy()
+                # my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["PATH"]
+                # subprocess.Popen(my_command, env=my_env)
+                # subprocess.call([os.getenv('SHELL'), '-i', '-c', cmd2send])
+                # answer = os.tcsetpgrp(0, os.getpgrp())
+                process = subprocess.Popen(cmd2send, env=my_env, shell=True, executable="/bin/zsh", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 out, err = process.communicate()
-                answer = out.decode('utf-8')
+                if err is not None and err != b"":
+                    answer = err.decode("utf-8")
+                else:
+                    answer = out.decode('utf-8')
                 return answer
                 # print(answer)
             except subprocess.CalledProcessError:
