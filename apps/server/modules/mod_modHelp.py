@@ -55,7 +55,7 @@ class mod_modHelp(mod_interface):
                     help_dict = mod.mod_helptxt()
                     if len(args) == 1 or (len(args) == 2 and args[1] != "-c"):
                         sRet += f'| Description:\n| {help_dict["desc"]}\n|\n'
-                    sRet += f'| Call: {help_dict["cmd"]}\n|\n'
+                    sRet += f'| Usage: {help_dict["cmd"]}\n|\n'
                     sRet += f'| Details:\n| {help_dict["ext"]}\n'
                     # sRet += f'| \n'
                     # sRet += f'| Command: {altCmd[3]}\n'

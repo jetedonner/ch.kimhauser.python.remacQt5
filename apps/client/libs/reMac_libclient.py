@@ -16,6 +16,8 @@ from apps.client.modules.mod_client_help import mod_client_help
 from apps.client.modules.mod_client_video import mod_client_video
 from apps.client.modules.mod_client_system_profiler import mod_client_system_profiler
 from apps.client.modules.mod_client_webload import mod_client_webload
+from apps.client.modules.mod_client_webupload import mod_client_webupload
+from apps.client.modules.mod_client_args import mod_client_args
 
 
 class reMac_libclient(reMac_libbase):
@@ -38,7 +40,9 @@ class reMac_libclient(reMac_libbase):
         mod_client_video(),
         mod_client_help(),
         mod_client_system_profiler(),
-        mod_client_webload()
+        mod_client_webload(),
+        mod_client_webupload(),
+        mod_client_args()
     ]
     prg = None
 

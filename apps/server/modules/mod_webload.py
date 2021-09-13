@@ -31,7 +31,8 @@ class mod_webload(mod_interface):
                                      "web and saves it on the server with the given path- and\n"
                                      "filename."),
             'cmd': f'{self.getCmdVariants4Help()} <dl_url> <filename_to_save>',
-            'ext': '<dl_url> is the weblink to download. <filename_to_save> is\n'
-                   'the filename / -path to save the downloaded content to.'
+            'ext': self.pritify4log(
+                    '<dl_url> specifies the weblink to download. <filename_to_save> is\n'
+                    'the filename/-path to where to save the downloaded content to.')
         }
         return help_txt
