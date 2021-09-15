@@ -13,11 +13,11 @@ class pref_dialog(QDialog):
     app = QApplication([])
 
     cmdCheckAll = QPushButton("Check All")
-
     txtTimeout = LineEdit()
     chkKeepAlive = QCheckBox("Keep connection alive")
     chkAddTimestamp = QCheckBox("Add timestamp to result")
     chkOpenImagePreview = QCheckBox("Open images preview")
+    chkOpenDlFiles = QCheckBox("Open downloaded files")
 
     settings = QSettings("kimhauser.ch", "reMacQt5")
 
@@ -33,7 +33,6 @@ class pref_dialog(QDialog):
         tabWdgt = QTabWidget()
         tabWdgt.setFont(QtGui.QFont("Arial", 13))
 
-        # lblHelpTitle = QLabel("Help")
         layoutMain = QVBoxLayout()
         layoutMain.setAlignment(Qt.AlignTop)
         layoutMain.addWidget(self.chkKeepAlive)
@@ -49,30 +48,17 @@ class pref_dialog(QDialog):
 
         layoutMain.addWidget(self.chkOpenImagePreview)
         self.chkOpenImagePreview.setChecked(bool(self.settings.value("openimagepreview", True, bool)))
-        # layoutMain.addWidget(lblHelpTitle)
-        # txtHelpContent = QTextBrowser()
-        # txtHelpContent.setOpenExternalLinks(True)
-        # txtHelpContent.setFixedHeight(500)
-        # txtHelpContent.setFixedWidth(600)
-        # # txtHelpContent.setFontFamily("Courier")
-        # # txtHelpContent.setFontPointSize(14)
-        # # txtHelpContent.setFontWeight(25)  # QtGui.QFont.Normal)
-        # txtHelpContent.setReadOnly(True)
-        #
-        # help_file = open(f'help.html', 'rb')
-        # help_txt = help_file.read()
-        #
-        # txtHelpContent.setHtml(help_txt.decode("utf-8"))
-        # layoutMain.addWidget(txtHelpContent)
+
+        layoutMain.addWidget(self.chkOpenDlFiles)
+        self.chkOpenDlFiles.setChecked(bool(self.settings.value("opendlfiles", True, bool)))
+
         cmdClose = QPushButton("Cancel")
         cmdClose.clicked.connect(self.closeDialog)
         cmdSave = QPushButton("Save")
         cmdSave.clicked.connect(self.saveDialog)
-        # layoutMain.addWidget(cmdClose)
         self.setWindowTitle("reMac v0.0.1 - Preferences")
         # self.setFixedWidth(300)
         self.setMinimumWidth(300)
-        # layoutServer.addWidget(txtOutputServer)
         wdgtGeneral.setLayout(layoutMain)
         tabWdgt.addTab(wdgtGeneral, QtGui.QIcon('res/images/homepage.png'), "General")
 
@@ -92,14 +78,7 @@ class pref_dialog(QDialog):
             grid.addWidget(self.listCheckBox[i], i, 0)
             grid.addWidget(self.listLabel[i], i, 1)
 
-        # self.button = QPushButton("Check CheckBox")
-        # self.button.clicked.connect(self.checkboxChanged)
-        # self.labelResult = QLabel()
-
-        # grid.addWidget(self.button, 10, 0, 1, 2)
-        # grid.addWidget(self.labelResult, 11, 0, 1, 2)
         wdgtModules.setLayout(grid)
-
 
         self.cmdCheckAll.clicked.connect(self.checkAll)
         grid.addWidget(self.cmdCheckAll)
@@ -127,17 +106,8 @@ class pref_dialog(QDialog):
 
         for i, v in enumerate(self.listCmds):
             self.listCheckBox[i].setChecked(setChecked)
-        # self.settings.setValue("timeout", self.txtTimeout.text())
-        # self.settings.setValue("keepalive", bool(self.chkKeepAlive.isChecked()))
-        # self.settings.setValue("addTimestamp", bool(self.chkAddTimestamp.isChecked()))
-        # self.settings.setValue("openimagepreview", bool(self.chkOpenImagePreview.isChecked()))
-        # self.close()
 
     def closeDialog(self):
-        # self.settings.setValue("timeout", self.txtTimeout.text())
-        # self.settings.setValue("keepalive", bool(self.chkKeepAlive.isChecked()))
-        # self.settings.setValue("addTimestamp", bool(self.chkAddTimestamp.isChecked()))
-        # self.settings.setValue("openimagepreview", bool(self.chkOpenImagePreview.isChecked()))
         self.close()
 
     def saveDialog(self):
@@ -145,6 +115,7 @@ class pref_dialog(QDialog):
         self.settings.setValue("keepalive", bool(self.chkKeepAlive.isChecked()))
         self.settings.setValue("addTimestamp", bool(self.chkAddTimestamp.isChecked()))
         self.settings.setValue("openimagepreview", bool(self.chkOpenImagePreview.isChecked()))
+        self.settings.setValue("opendlfiles", bool(self.chkOpenDlFiles.isChecked()))
 
         for i, v in enumerate(self.listCmds):
             print(f"{i}: {v} => {self.listCheckBox[i].isChecked()}")
