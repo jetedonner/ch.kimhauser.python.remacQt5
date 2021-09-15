@@ -39,8 +39,8 @@ class mod_help(mod_interface):
         sRet += f'| - http://kimhauser.ch/index.php/projects/remac\n'
         sRet += f'| \n'
         sRet += f'| Credits:\n'
-        sRet += f'| - ...\n'
-        sRet += f'| - ...\n'
+        sRet += f'| - <a href="https://github.com/Marten4n6/EvilOSX">https://github.com/Marten4n6/EvilOSX</a>\n'
+        sRet += f'| - https://python.org/about/help/\n'
         sRet += f'| \n'
         sRet += f'#========================================================================#\n'
         return sRet

@@ -2,6 +2,7 @@ import os
 import base64
 import time
 from PIL import Image
+from PyQt5.QtCore import QSettings
 from apps.client.modules.libs.mod_client_interface import mod_client_interface
 
 
@@ -10,6 +11,8 @@ class mod_client_webcam(mod_client_interface):
     cmd_short = "wc"
     cmd_long = "webcam"
     cmd_desc = "Webcam client module"
+
+    settings = QSettings("kimhauser.ch", "reMacQt5")
 
     def setup_mod(self):
         print(f'Module Setup (mod_client_webcam) called successfully!')
@@ -35,6 +38,8 @@ class mod_client_webcam(mod_client_interface):
         with open(image_out, "wb") as output_file:
             output_file.write(base64.b64decode(base64ToolContent))
 
-        with Image.open(image_out) as img:
-            img.show()
+        if bool(self.settings.value("openimagepreview", True, bool)):
+            with Image.open(image_out) as img:
+                img.show()
+
         return f"Webcam snapshot saved to: {image_out}"

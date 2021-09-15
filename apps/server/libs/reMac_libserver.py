@@ -8,29 +8,29 @@ from apps.server.modules import mod_webupload, mod_args
 from apps.libs.reMac_libbase import reMac_libbase
 
 reMacModules = [
-    mod_hello.mod_hello(),
-    mod_clipboard.mod_clipboard(),
-    mod_chrome_history.mod_chrome_history(),
-    mod_chrome_logins.mod_chrome_logins(),
-    mod_shellcmd.mod_shellcmd(),
-    mod_screenshot.mod_screenshot(),
-    mod_webcam.mod_webcam(),
-    mod_keylogger.mod_keylogger(),
-    mod_recmic.mod_recmic(),
-    mod_modHelp.mod_modHelp(),
-    mod_info.mod_info(),
-    mod_download.mod_download(),
-    mod_upload.mod_upload(),
-    mod_video.mod_video(),
-    mod_help.mod_help(),
-    mod_system_profiler.mod_system_profiler(),
-    mod_webload.mod_webload(),
-    mod_webupload.mod_webupload(),
-    mod_args.mod_args()
-]
-
+        mod_hello.mod_hello(),
+        mod_clipboard.mod_clipboard(),
+        mod_chrome_history.mod_chrome_history(),
+        mod_chrome_logins.mod_chrome_logins(),
+        mod_shellcmd.mod_shellcmd(),
+        mod_screenshot.mod_screenshot(),
+        mod_webcam.mod_webcam(),
+        mod_keylogger.mod_keylogger(),
+        mod_recmic.mod_recmic(),
+        mod_modHelp.mod_modHelp(),
+        mod_info.mod_info(),
+        mod_download.mod_download(),
+        mod_upload.mod_upload(),
+        mod_video.mod_video(),
+        mod_help.mod_help(),
+        mod_system_profiler.mod_system_profiler(),
+        mod_webload.mod_webload(),
+        mod_webupload.mod_webupload(),
+        mod_args.mod_args()
+    ]
 
 class reMac_libserver(reMac_libbase):
+
     def __init__(self, selector, sock, addr):
         reMac_libbase.__init__(self, selector, sock, addr)
         self._recv_buffer = b""

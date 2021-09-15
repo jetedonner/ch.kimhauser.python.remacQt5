@@ -10,7 +10,7 @@ from apps.server.modules.libs.mod_interfaceRunCmd import mod_interfaceRunCmd
 class mod_system_profiler(mod_interfaceRunCmd):
 
     cmd_short = "sp"
-    cmd_long = "systemprofiler"
+    cmd_long = "sysprofiler"
     cmd_desc = "System profiler module"
 
     cmd_sys_prof = "system_profiler | more"

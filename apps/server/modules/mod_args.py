@@ -7,7 +7,7 @@ class mod_args(mod_interface):
 
     cmd_short = "ar"
     cmd_long = "args"
-    cmd_desc = "Args module - test module for processing module arguments"
+    cmd_desc = "Args test module for processing module args"
 
     def setup_mod(self):
         print(f'Module Setup (mod_args) called successfully!')

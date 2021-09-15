@@ -4,7 +4,7 @@ from datetime import datetime
 from threading import Timer
 
 from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, \
-    QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox
+    QTextEdit, QLineEdit, QComboBox, QTabWidget, QMainWindow, QAction, QGroupBox, QTextBrowser
 from PyQt5.QtCore import QThread, QSettings, QTimer
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QMovie
@@ -18,16 +18,17 @@ from ui.help_dialog import help_dialog
 from ui.pref_dialog import pref_dialog
 from apps.libs.reMac_createDeamon import reMac_createDeamon
 from ui.libs.runCommand import runCommand
+from apps.server.libs import reMac_libserver
 
 import config
 
 app = QApplication([])
 txtOutputServer = QTextEdit()
-txtOutputClient = QTextEdit()
+txtOutputClient = QTextBrowser()
 txtOutputLaunchDeamon = QTextEdit()
 txtHost = QLineEdit("192.168.0.49")
 txtPort = QLineEdit("6890")
-settings = QSettings("kimhauser.ch", "reMacQt5");
+settings = QSettings("kimhauser.ch", "reMacQt5")
 txtLdKey = QLineEdit("ch.kimhauser.macos.remac.launchdeamon")
 txtLdProgram = QLineEdit("remac_lanuchdeamon")
 
@@ -61,7 +62,7 @@ class reMacQtApp(QMainWindow):
 
     def initUI(self):
 
-        self.prefWin.initUI(settings)
+        self.prefWin.initUI(settings, reMac_libserver.reMacModules)
 
         window = QWidget()
         wdgtServer = QWidget()
@@ -191,6 +192,7 @@ class reMacQtApp(QMainWindow):
         wdgtClientOutputLine.setLayout(layoutClientOutputLine)
         wdgtClientOutputLine.setContentsMargins(0, 0, 0, 0)
         layoutClient.addWidget(wdgtClientOutputLine)
+        txtOutputClient.setOpenExternalLinks(True)
         txtOutputClient.setFontFamily("Courier")
         txtOutputClient.setFontPointSize(14)
         txtOutputClient.setReadOnly(True)
@@ -477,6 +479,7 @@ class reMacQtApp(QMainWindow):
             now = datetime.now()  # current date and time
             msgLine = f'{now.strftime("%H:%M:%S")}: {msgLine}'
 
+        # txtOutputClient.setHtml(msgLine)
         txtOutputClient.append(msgLine)
         txtOutputClient.verticalScrollBar().setValue(txtOutputClient.verticalScrollBar().maximum())
         if set_status_bar:

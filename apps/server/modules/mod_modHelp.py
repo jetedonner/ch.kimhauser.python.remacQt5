@@ -39,9 +39,15 @@ class mod_modHelp(mod_interface):
         sRet += f'| \n'
         if len(args) == 0:
             sRet += f'| Modules and command help (all active modules):\n'
+            sRet += f'| \n'
             for mod in reMacModules:
                 altCmd = mod.cmd_long
-                sRet += f'| {mod.cmd_short} / {mod.cmd_long}:\t\t{mod.cmd_desc}\n'
+                cmdStr = f'{mod.cmd_short} / {mod.cmd_long}:'
+                if len(cmdStr) > 16:
+                    tabs = f'\t'
+                else:
+                    tabs = f'\t\t'
+                sRet += f'| {cmdStr}{tabs}{mod.cmd_desc}\n'
             sRet += f'| \n'
             sRet += f'| Print help for specific module: mh <module>\n'
         elif len(args) >= 1:
